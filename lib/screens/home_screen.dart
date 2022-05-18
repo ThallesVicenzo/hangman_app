@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../routes/named_routes.dart';
 import '../widgets/rounded_button.dart';
+import '../widgets/text_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,14 +16,7 @@ class HomeScreen extends StatelessWidget {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              const Text(
-                'HANGMAN',
-                style: TextStyle(
-                  color: Color(0xffffffff),
-                  fontFamily: 'PatrickHand',
-                  fontSize: 60,
-                ),
-              ),
+              TextWidget(title: 'HANGMAN', fontSize: 50,),
               const Image(
                 image: AssetImage('assets/images/hang_icon.png'),
               ),
