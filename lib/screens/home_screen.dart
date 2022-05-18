@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               TextWidget(title: 'HANGMAN', fontSize: 50,),
               const Image(
-                image: AssetImage('assets/images/hang_icon.png'),
+                image: AssetImage('assets/images/gallow.png'),
               ),
               Column(
                 children: [
