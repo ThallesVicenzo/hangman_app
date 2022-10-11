@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/screens/game_screen.dart';
+import '../constants/constants.dart';
 import '../routes/named_routes.dart';
 import '../services/hangman-model.dart';
 import '../widgets/rounded_button.dart';
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 50,
               ),
               const Image(
-                image: AssetImage('assets/images/gallow.png'),
+                image: AssetImage(kLogo),
               ),
               Column(
                 children: [
@@ -50,17 +51,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.blue,
                     title: 'Start',
                     onPressed: () {
-                      print(hangmanDataFromApi);
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return GameScreen(
                           hangmanDataFromApi
                         );
                       }));
                     },
-                    style: const TextStyle(
-                        fontFamily: 'PatrickHand',
-                        color: Colors.white,
-                        fontSize: 25),
+                    style: kTextStyle
                   ),
                   const SizedBox(
                     height: 20,
@@ -75,10 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         NamedRoutes.highscores,
                       );
                     },
-                    style: const TextStyle(
-                        fontFamily: 'PatrickHand',
-                        color: Colors.white,
-                        fontSize: 25),
+                    style: kTextStyle,
                   ),
                 ],
               )
