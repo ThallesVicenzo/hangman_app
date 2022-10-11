@@ -9,8 +9,8 @@ import 'named_routes.dart';
 class Pages {
   static Map<String, WidgetBuilder> all(BuildContext context) {
     return {
-      NamedRoutes.home: (context) => const HomeScreen(),
-      NamedRoutes.game: (context) => const GameScreen(),
+      NamedRoutes.home: (context) => HomeScreen(),
+      NamedRoutes.game: (context) => GameScreen(null),
       NamedRoutes.highscores: (context) => const HighScoreScreen(),
       NamedRoutes.splash: (context) => const SplashScreen(),
     };
