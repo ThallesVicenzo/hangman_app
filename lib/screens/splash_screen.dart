@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Navigator.of(context).pushReplacementNamed(NamedRoutes.home);
         }
       },
-      child: Center(child: Image.asset('assets/images/hang_icon.png'),),),
+      child: Center(child: Image.asset('assets/images/gallow.png'),),),
     );
   }
 }
