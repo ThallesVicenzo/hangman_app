@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hangman_app/constants/constants.dart';
 
 import '../routes/named_routes.dart';
 
@@ -17,11 +18,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
       Duration(milliseconds: 2500),
       () {
-
-        setState ((){
+        setState(() {
           opacity = 0;
         });
-
       },
     );
   }
@@ -31,13 +30,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff421b9c),
-      body: AnimatedOpacity(duration: kThemeAnimationDuration, opacity: opacity, onEnd: (){
-        if(opacity == 0){
-          Navigator.of(context).pushReplacementNamed(NamedRoutes.home);
-        }
-      },
-      child: Center(child: Image.asset('assets/images/gallow.png'),),),
+      backgroundColor: kBackgroundColor,
+      body: AnimatedOpacity(
+        duration: kThemeAnimationDuration,
+        opacity: opacity,
+        onEnd: () {
+          if (opacity == 0) {
+            Navigator.of(context).pushReplacementNamed(NamedRoutes.home);
+          }
+        },
+        child: Center(
+          child: Image.asset('assets/images/gallow.png'),
+        ),
+      ),
     );
   }
 }
