@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hangman_app/constants/constants.dart';
 
 class HighScoreScreen extends StatefulWidget {
   const HighScoreScreen({Key? key}) : super(key: key);
@@ -12,22 +13,23 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xff421b9c),
+        backgroundColor: kBackgroundColor,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children:  [
-            const Icon(Icons.house, color: Colors.white, size: 30,),
+          children: [
+            const Icon(
+              Icons.house,
+              color: Colors.white,
+              size: 30,
+            ),
             const Text(
               'High Scores',
               style: TextStyle(
-                fontFamily: 'PatrickHand',
-                color: Colors.white,
-                fontSize: 35
-              ),
+                  fontFamily: 'PatrickHand', color: Colors.white, fontSize: 35),
             ),
-            Column(children: const [
-              Text('Rank')
-            ],)
+            Column(
+              children: const [Text('Rank')],
+            )
           ],
         ),
       ),
