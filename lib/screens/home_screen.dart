@@ -3,17 +3,15 @@ import 'package:hangman_app/screens/game_screen.dart';
 import '../constants/constants.dart';
 import '../routes/named_routes.dart';
 import '../services/hangman-model.dart';
-import '../widgets/rounded_button.dart';
+import '../widgets/custom_button.dart';
 import '../widgets/text_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   var hangmanDataFromApi;
 
   @override
@@ -33,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: MediaQuery(
         data: MediaQuery.of(context),
         child: Scaffold(
-          backgroundColor: const Color(0xff421b9c),
+          backgroundColor: kBackgroundColor,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -46,33 +44,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Column(
                 children: [
-                  RoundedButton(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.blue,
-                    title: 'Start',
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return GameScreen(
-                          hangmanDataFromApi
-                        );
-                      }));
-                    },
-                    style: kTextStyle
-                  ),
+                  CustomTextButton(
+                      width: 130,
+                      label: 'Start',
+                      fontSize: 20,
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return GameScreen(hangmanDataFromApi);
+                        }));
+                      }),
                   const SizedBox(
                     height: 20,
                   ),
-                  RoundedButton(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.blue,
-                    title: 'High Scores',
+                  CustomTextButton(
+                    label: 'High Scores',
+                    fontSize: 20,
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
                         NamedRoutes.highscores,
                       );
                     },
-                    style: kTextStyle,
                   ),
                 ],
               )
