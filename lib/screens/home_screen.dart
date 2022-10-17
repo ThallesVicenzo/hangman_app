@@ -12,7 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var hangmanDataFromApi;
+
+  var hangmanData;
 
   @override
   initState() {
@@ -21,56 +22,55 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<dynamic> getDataFromService() async {
-    hangmanDataFromApi = await HangmanModel().createGame();
-    return hangmanDataFromApi;
+    hangmanData = await HangmanModel().createGame();
+    return hangmanData;
   }
+
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: MediaQuery(
-        data: MediaQuery.of(context),
-        child: Scaffold(
-          backgroundColor: kBackgroundColor,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              TextWidget(
-                title: 'HANGMAN',
-                fontSize: 50,
-              ),
-              const Image(
-                image: AssetImage(kLogo),
-              ),
-              Column(
-                children: [
-                  CustomTextButton(
-                      width: 130,
-                      label: 'Start',
-                      fontSize: 20,
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return GameScreen(hangmanDataFromApi);
-                        }));
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextButton(
-                    label: 'High Scores',
+      child: Scaffold(
+        backgroundColor: kBackgroundColor,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            TextWidget(
+              title: 'HANGMAN',
+              fontSize: 50,
+            ),
+            const Image(
+              image: AssetImage(kLogo),
+            ),
+            Column(
+              children: [
+                CustomTextButton(
+                    width: 130,
+                    label: 'Start',
                     fontSize: 20,
                     onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        NamedRoutes.highscores,
-                      );
-                    },
-                  ),
-                ],
-              )
-            ],
-          ),
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return GameScreen(
+                          hangmanData
+                        );
+                      }));
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomTextButton(
+                  label: 'High Scores',
+                  fontSize: 20,
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      NamedRoutes.highscores,
+                    );
+                  },
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
