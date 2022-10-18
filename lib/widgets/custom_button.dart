@@ -5,6 +5,7 @@ class CustomTextButton extends StatelessWidget {
   const CustomTextButton({
     required this.label,
     required this.onPressed,
+    this.color = Colors.blue,
     this.width = 130,
     this.height = 60,
     this.fontSize = 16,
@@ -21,15 +22,17 @@ class CustomTextButton extends StatelessWidget {
 
   final double fontSize;
 
+  final Color color;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
       height: height,
       child: TextButton(
-        style: ButtonStyle(
-            backgroundColor:
-                MaterialStateColor.resolveWith((states) => Colors.blue)),
+        style: TextButton.styleFrom(
+          backgroundColor: color,
+        ),
         onPressed: onPressed,
         child: Row(
           mainAxisSize: MainAxisSize.min,
