@@ -12,7 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   var hangmanData;
 
   @override
@@ -26,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return hangmanData;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,8 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
               title: 'HANGMAN',
               fontSize: 50,
             ),
-            const Image(
-              image: AssetImage(kLogo),
+            Image(
+              image: AssetImage(kImageList[7]),
             ),
             Column(
               children: [
@@ -49,10 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     label: 'Start',
                     fontSize: 20,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return GameScreen(
-                          hangmanData
-                        );
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return GameScreen(hangmanData);
                       }));
                     }),
                 const SizedBox(
