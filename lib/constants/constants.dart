@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-const kLogo = 'assets/images/gallow.png';
-const kHang = 'assets/images/0.png';
-const kHangHead = 'assets/images/1.png';
-const kHangHeadChest = 'assets/images/2.png';
-const kHangHeadArm1 = 'assets/images/3.png';
-const kHangHeadArm2 = 'assets/images/4.png';
-const kHangHeadLeg1 = 'assets/images/5.png';
-const kHangHeadLeg2 = 'assets/images/6.png';
+const kImageList = <String>[
+  'assets/images/0.png',
+  'assets/images/1.png',
+  'assets/images/2.png',
+  'assets/images/3.png',
+  'assets/images/4.png',
+  'assets/images/5.png',
+  'assets/images/6.png',
+  'assets/images/gallow.png',
+];
 
 const kKeyboard = <dynamic> [
   'A',
