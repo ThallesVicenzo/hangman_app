@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fontSize: 50,
             ),
             Image(
-              image: AssetImage(kImageList[7]),
+              image: AssetImage(kHangmanGallow),
             ),
             Column(
               children: [
