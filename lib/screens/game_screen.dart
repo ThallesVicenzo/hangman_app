@@ -21,7 +21,7 @@ class _GameScreenState extends State<GameScreen> {
   var letterData;
   var guessData;
 
-  int lives = 5;
+  int lives = 6;
   int highscore = 0;
 
   HangmanModel hangmanModel = HangmanModel();
@@ -53,18 +53,26 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+  void updateHangImage() async {
+    if(guessData == false){
+      lives = lives - 1;
+    }
+    else if(lives == 0){
+      Navigator.pop(context);
+    }
+  }
+
   Future updateHangmanString(index) async {
     if (keyboard[index] == false) {
       guessLetter = kKeyboard[index];
       await getLetter(token, guessLetter);
       setState(() {
         updateUI();
+        updateHangImage();
         keyboard[index] = true;
       });
     } else if (keyboard[index] = true) return null;
   }
-
-  Future updateHangImage() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +96,7 @@ class _GameScreenState extends State<GameScreen> {
                 ],
               ),
             ),
-            Expanded(child: Image.asset(kImageList[0])),
+            Expanded(child: Image.asset(kImageList[lives])),
             Center(
               child: Text(
                 '$hangmanString',
