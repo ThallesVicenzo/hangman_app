@@ -18,9 +18,12 @@ class _GameScreenState extends State<GameScreen> {
   var hangmanString;
 
   var guessLetter;
-  var letterData;
+  var newHangmanData;
   var guessData;
 
+  var hint;
+
+  int totalHints = 3;
   int lives = 6;
   int highscore = 0;
 
@@ -40,24 +43,35 @@ class _GameScreenState extends State<GameScreen> {
     token = hangmanData['token'];
   }
 
-  Future<dynamic> getLetter(dynamic token, dynamic letter) async {
-    letterData = await HangmanModel().guessLetter(token, letter);
-    return letterData;
+  void updateUI() {
+    if (newHangmanData != null) {
+      hangmanString = newHangmanData['hangman'];
+      token = newHangmanData['token'];
+      guessData = newHangmanData['correct'];
+    }
   }
 
-  void updateUI() {
-    if (letterData != null) {
-      hangmanString = letterData['hangman'];
-      token = letterData['token'];
-      guessData = letterData['correct'];
+  void hintUI() {
+    if (newHangmanData != null) {
+      hint = newHangmanData['hint'];
+      token = newHangmanData['token'];
     }
+  }
+
+  Future<dynamic> getLetter(dynamic token, dynamic letter) async {
+    newHangmanData = await HangmanModel().guessLetter(token, letter);
+    return newHangmanData;
+  }
+
+  Future<dynamic> getHint(dynamic token) async {
+    newHangmanData = await HangmanModel().getHint(token);
+    return newHangmanData;
   }
 
   void updateHangImage() async {
-    if(guessData == false){
+    if (guessData == false) {
       lives = lives - 1;
-    }
-    else if(lives == 0){
+    } else if (lives == 0) {
       Navigator.pop(context);
     }
   }
@@ -72,6 +86,42 @@ class _GameScreenState extends State<GameScreen> {
         keyboard[index] = true;
       });
     } else if (keyboard[index] = true) return null;
+  }
+
+  Future updateUiWithHint() async {
+    await getHint(token);
+    hintUI();
+    if (totalHints > 0) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: kBackgroundColor,
+              title: TextWidget(
+                title: 'The word that you are looking for is: $hint',
+                fontSize: 25,
+              ),
+              content: TextWidget(
+                title: 'Warning: You have $totalHints more hint(s).',
+                fontSize: 25,
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    totalHints = totalHints - 1;
+                    Navigator.pop(context);
+                  },
+                  child: TextWidget(
+                    title: 'OK',
+                    fontSize: 30,
+                  ),
+                ),
+              ],
+            );
+          });
+    } else {
+      return null;
+    }
   }
 
   @override
@@ -89,9 +139,14 @@ class _GameScreenState extends State<GameScreen> {
                 children: [
                   TextWidget(title: 'life = $lives', fontSize: 25),
                   TextWidget(title: '$highscore', fontSize: 25),
-                  Icon(
-                    Icons.lightbulb,
-                    color: Colors.white,
+                  IconButton(
+                    onPressed: () async {
+                      await updateUiWithHint();
+                    },
+                    icon: Icon(
+                      Icons.lightbulb,
+                      color: Colors.white,
+                    ),
                   )
                 ],
               ),
