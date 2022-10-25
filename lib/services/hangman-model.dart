@@ -2,13 +2,6 @@ import 'package:hangman_app/services/network.dart';
 
 const link = 'https://hangman-api.herokuapp.com/hangman';
 
-/*var httpsUri = Uri(
-    scheme: 'https',
-    host: 'https://hangman-api.herokuapp.com',
-    path: '/hangman',
-    queryParameters: {'token': '$', 'letter': ''});*/
-
-
 class HangmanModel {
   Future<dynamic> createGame() async {
     HangmanApiService hangmanApiService = HangmanApiService(link);
@@ -23,5 +16,13 @@ class HangmanModel {
     var hangmanLetter = await hangmanApiService.hangmanLetter(
         '$link?token=$gameToken&letter=$letter');
     return hangmanLetter;
+  }
+
+  Future<dynamic> getHint(dynamic gameToken) async {
+    HangmanApiService hangmanApiService = HangmanApiService(link);
+
+    var hangmanHint = await hangmanApiService.hangmanHint(
+        '$link/hint?token=$gameToken');
+    return hangmanHint;
   }
 }
