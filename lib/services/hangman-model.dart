@@ -25,4 +25,11 @@ class HangmanModel {
         '$link/hint?token=$gameToken');
     return hangmanHint;
   }
+
+  Future<dynamic> getSolution(dynamic gameToken) async {
+    HangmanApiService hangmanApiService = HangmanApiService(link);
+
+    var hangmanSolution = await hangmanApiService.hangmanSolution('$link?token=$gameToken');
+    return hangmanSolution;
+  }
 }
