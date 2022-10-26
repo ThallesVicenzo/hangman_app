@@ -40,33 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
             Image(
               image: AssetImage(kHangmanGallow),
             ),
-            Column(
-              children: [
-                CustomTextButton(
-                    width: 130,
-                    label: 'Start',
-                    fontSize: 20,
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return GameScreen(hangmanData);
-                      }));
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                CustomTextButton(
-                  label: 'High Scores',
-                  fontSize: 20,
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      NamedRoutes.highscores,
-                    );
-                  },
-                ),
-              ],
-            )
+            CustomTextButton(
+                width: 130,
+                label: 'Start',
+                fontSize: 20,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return GameScreen(hangmanData);
+                  }));
+                }),
           ],
         ),
       ),
