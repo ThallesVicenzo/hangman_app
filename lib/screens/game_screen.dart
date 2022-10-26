@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
+import 'package:hangman_app/routes/named_routes.dart';
 import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
@@ -23,11 +24,11 @@ class _GameScreenState extends State<GameScreen> {
 
   var hint;
 
+  var restartData;
+
   int totalHints = 3;
   int lives = 6;
   int highscore = 0;
-
-  HangmanModel hangmanModel = HangmanModel();
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
@@ -68,11 +69,53 @@ class _GameScreenState extends State<GameScreen> {
     return newHangmanData;
   }
 
+  Future<dynamic> restartGame() async {
+    restartData = await HangmanModel().createGame();
+    return restartData;
+  }
+
   void updateHangImage() async {
     if (guessData == false) {
       lives = lives - 1;
-    } else if (lives == 0) {
-      Navigator.pop(context);
+    }
+    if (lives <= 0) {
+      setState(() {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: kBackgroundColor,
+                title: TextWidget(
+                  title: 'You lose!',
+                  fontSize: 50,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      await restartGame();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return GameScreen(restartData);
+                      }));
+                    },
+                    child: TextWidget(
+                      title: 'Restart',
+                      fontSize: 25,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, NamedRoutes.home);
+                    },
+                    child: TextWidget(
+                      title: 'Return to Title',
+                      fontSize: 25,
+                    ),
+                  )
+                ],
+              );
+            });
+      });
     }
   }
 
@@ -151,7 +194,11 @@ class _GameScreenState extends State<GameScreen> {
                 ],
               ),
             ),
-            Expanded(child: Image.asset(kImageList[lives])),
+            Expanded(
+              child: Image.asset(
+                kImageList[lives],
+              ),
+            ),
             Center(
               child: Text(
                 '$hangmanString',
