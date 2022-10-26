@@ -24,13 +24,17 @@ class _GameScreenState extends State<GameScreen> {
 
   var hint;
 
+  var hangmanSolution;
+  var solution;
+
   var restartData;
 
   int totalHints = 3;
   int lives = 6;
-  int highscore = 0;
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
+
+  HangmanModel hangmanModel = HangmanModel();
 
   @override
   initState() {
@@ -59,18 +63,28 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+  void solutionUI() {
+    solution = hangmanSolution['solution'];
+    token = hangmanSolution['token'];
+  }
+
   Future<dynamic> getLetter(dynamic token, dynamic letter) async {
-    newHangmanData = await HangmanModel().guessLetter(token, letter);
+    newHangmanData = await hangmanModel.guessLetter(token, letter);
     return newHangmanData;
   }
 
+  Future<dynamic> getSolution(dynamic token) async {
+    hangmanSolution = await hangmanModel.getSolution(token);
+    return hangmanSolution;
+  }
+
   Future<dynamic> getHint(dynamic token) async {
-    newHangmanData = await HangmanModel().getHint(token);
+    newHangmanData = await hangmanModel.getHint(token);
     return newHangmanData;
   }
 
   Future<dynamic> restartGame() async {
-    restartData = await HangmanModel().createGame();
+    restartData = await hangmanModel.createGame();
     return restartData;
   }
 
@@ -119,10 +133,55 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+  Future updateGameStatus() async {
+    await getSolution(token);
+    solutionUI();
+    if (hangmanString == solution) {
+      setState(() {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: kBackgroundColor,
+                title: TextWidget(
+                  title: 'Congratulations!',
+                  fontSize: 40,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      await restartGame();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return GameScreen(restartData);
+                      }));
+                    },
+                    child: TextWidget(
+                      title: 'New Game',
+                      fontSize: 25,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, NamedRoutes.home);
+                    },
+                    child: TextWidget(
+                      title: 'Return to Title',
+                      fontSize: 25,
+                    ),
+                  )
+                ],
+              );
+            });
+      });
+    }
+  }
+
   Future updateHangmanString(index) async {
     if (keyboard[index] == false) {
       guessLetter = kKeyboard[index];
       await getLetter(token, guessLetter);
+      await updateGameStatus();
       setState(() {
         updateUI();
         updateHangImage();
@@ -181,7 +240,6 @@ class _GameScreenState extends State<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextWidget(title: 'life = $lives', fontSize: 25),
-                  TextWidget(title: '$highscore', fontSize: 25),
                   IconButton(
                     onPressed: () async {
                       await updateUiWithHint();
