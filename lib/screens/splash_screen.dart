@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/home_screen.dart';
-
-import '../routes/named_routes.dart';
 import '../services/hangman-model.dart';
 
 class SplashScreen extends StatefulWidget {
