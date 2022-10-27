@@ -41,6 +41,7 @@ class _GameScreenState extends State<GameScreen> {
     super.initState();
     keyboard = List.generate(26, (index) => false);
     getUI(widget.hangmanDataFromApi);
+    callGetSolution();
   }
 
   void getUI(dynamic hangmanData) {
@@ -86,6 +87,11 @@ class _GameScreenState extends State<GameScreen> {
   Future<dynamic> restartGame() async {
     restartData = await hangmanModel.createGame();
     return restartData;
+  }
+
+  Future callGetSolution() async {
+    await getSolution(token);
+    solutionUI();
   }
 
   void updateHangImage() async {
@@ -134,8 +140,6 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Future updateGameStatus() async {
-    await getSolution(token);
-    solutionUI();
     if (hangmanString == solution) {
       setState(() {
         showDialog(
@@ -181,10 +185,10 @@ class _GameScreenState extends State<GameScreen> {
     if (keyboard[index] == false) {
       guessLetter = kKeyboard[index];
       await getLetter(token, guessLetter);
-      await updateGameStatus();
       setState(() {
         updateUI();
         updateHangImage();
+        updateGameStatus();
         keyboard[index] = true;
       });
     } else if (keyboard[index] = true) return null;
