@@ -1,29 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/screens/game_screen.dart';
 import '../constants/constants.dart';
-import '../routes/named_routes.dart';
-import '../services/hangman-model.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/text_widget.dart';
 
 class HomeScreen extends StatefulWidget {
+  HomeScreen(this.firstHangmanData);
+
+  final firstHangmanData;
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var hangmanData;
-
-  @override
-  initState() {
-    super.initState();
-    getDataFromService();
-  }
-
-  Future<dynamic> getDataFromService() async {
-    hangmanData = await HangmanModel().createGame();
-    return hangmanData;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 20,
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return GameScreen(hangmanData);
+                    return GameScreen(widget.firstHangmanData);
                   }));
                 }),
           ],

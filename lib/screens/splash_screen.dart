@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
+import 'package:hangman_app/screens/home_screen.dart';
 
 import '../routes/named_routes.dart';
+import '../services/hangman-model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   initState() {
     super.initState();
     Timer(
-      Duration(milliseconds: 2500),
+      Duration(milliseconds: 1500),
       () {
         setState(() {
           opacity = 0;
@@ -25,7 +27,15 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  var hangmanData;
   double opacity = 1;
+
+  Future<dynamic> getDataFromService() async {
+    hangmanData = await HangmanModel().createGame();
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return HomeScreen(hangmanData);
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
         opacity: opacity,
         onEnd: () {
           if (opacity == 0) {
-            Navigator.of(context).pushReplacementNamed(NamedRoutes.home);
+            getDataFromService();
           }
         },
         child: Center(
