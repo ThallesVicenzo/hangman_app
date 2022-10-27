@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/routes/named_routes.dart';
+import 'package:hangman_app/screens/home_screen.dart';
 import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
@@ -124,14 +125,18 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, NamedRoutes.home);
+                    onPressed: () async {
+                      await restartGame();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return HomeScreen(restartData);
+                      }));
                     },
                     child: TextWidget(
-                      title: 'Return to Title',
+                      title: 'Return to title',
                       fontSize: 25,
                     ),
-                  )
+                  ),
                 ],
               );
             });
@@ -166,14 +171,18 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, NamedRoutes.home);
+                    onPressed: () async {
+                      await restartGame();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return GameScreen(restartData);
+                          }));
                     },
                     child: TextWidget(
-                      title: 'Return to Title',
+                      title: 'Return to title',
                       fontSize: 25,
                     ),
-                  )
+                  ),
                 ],
               );
             });
