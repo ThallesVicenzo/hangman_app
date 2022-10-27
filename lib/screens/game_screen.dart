@@ -175,7 +175,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                            return GameScreen(restartData);
+                            return HomeScreen(restartData);
                           }));
                     },
                     child: TextWidget(
