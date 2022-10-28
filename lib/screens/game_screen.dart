@@ -110,6 +110,7 @@ class _GameScreenState extends State<GameScreen> {
                   title: 'You lose!',
                   fontSize: 50,
                 ),
+                content: TextWidget(title: 'The correct word was: $solution', fontSize: 30,),
                 actions: [
                   TextButton(
                     onPressed: () async {
@@ -213,7 +214,7 @@ class _GameScreenState extends State<GameScreen> {
             return AlertDialog(
               backgroundColor: kBackgroundColor,
               title: TextWidget(
-                title: 'The word that you are looking for is: $hint',
+                title: 'The letter that you are looking for is: $hint',
                 fontSize: 25,
               ),
               content: TextWidget(
@@ -224,6 +225,7 @@ class _GameScreenState extends State<GameScreen> {
                 TextButton(
                   onPressed: () {
                     totalHints = totalHints - 1;
+                    lives = lives - 1;
                     Navigator.pop(context);
                   },
                   child: TextWidget(
