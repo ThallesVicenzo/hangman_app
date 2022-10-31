@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
+import 'package:hangman_app/screens/home_screen.dart';
+import 'package:hangman_app/widgets/text_widget.dart';
+
+import '../widgets/highscore_list_content.dart';
 
 class HighScoreScreen extends StatefulWidget {
   const HighScoreScreen({Key? key}) : super(key: key);
@@ -15,21 +19,78 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
       child: Scaffold(
         backgroundColor: kBackgroundColor,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Icon(
-              Icons.house,
-              color: Colors.white,
-              size: 30,
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    color: Colors.white,
+                    icon: Icon(size: 35, Icons.house),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return HomeScreen(null);
+                      }));
+                    },
+                  ),
+                  SizedBox(width: 35),
+                  TextWidget(title: 'High Scores', fontSize: 45),
+                ],
+              ),
             ),
-            const Text(
-              'High Scores',
-              style: TextStyle(
-                  fontFamily: 'PatrickHand', color: Colors.white, fontSize: 35),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Column(
+                children: [
+                  HighscoreListContent(
+                    title1: 'Rank',
+                    title2: 'Date',
+                    title3: 'Score',
+                    fontSize: 30.0,
+                  ),
+                  HighscoreListContent(
+                      title1: '🥇1',
+                      title2: '20-Mar-31',
+                      title3: '1',
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w300),
+                  HighscoreListContent(
+                      title1: '🥈2',
+                      title2: '20-Mar-31',
+                      title3: '1',
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w300),
+                  HighscoreListContent(
+                      title1: '🥉3',
+                      title2: '20-Mar-31',
+                      title3: '1',
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w300),
+                ],
+              ),
             ),
-            Column(
-              children: const [Text('Rank')],
-            )
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Column(
+                children: [
+                  HighscoreListContent(
+                      title1: '4',
+                      title2: '20-Mar-31',
+                      title3: '1',
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w300),
+                  HighscoreListContent(
+                      title1: '5',
+                      title2: '20-Mar-31',
+                      title3: '1',
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w300),
+                ],
+              ),
+            ),
           ],
         ),
       ),
