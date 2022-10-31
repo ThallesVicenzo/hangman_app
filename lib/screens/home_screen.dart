@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/screens/game_screen.dart';
 import '../constants/constants.dart';
+import '../routes/named_routes.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/text_widget.dart';
 
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Image(
               image: AssetImage(kHangmanGallow),
             ),
+
             CustomTextButton(
                 width: 130,
                 label: 'Start',
@@ -39,6 +41,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     return GameScreen(widget.firstHangmanData);
                   }));
                 }),
+            Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomTextButton(
+                  label: 'High Scores',
+                  fontSize: 20,
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      NamedRoutes.highscores,
+                    );
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),
