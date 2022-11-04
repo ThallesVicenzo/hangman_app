@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/home_screen.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/highscore_list_content.dart';
 
 class HighScoreScreen extends StatefulWidget {
-  const HighScoreScreen({Key? key}) : super(key: key);
 
   @override
   State<HighScoreScreen> createState() => _HighScoreScreenState();
 }
 
 class _HighScoreScreenState extends State<HighScoreScreen> {
+
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState(){
+    super.initState();
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
