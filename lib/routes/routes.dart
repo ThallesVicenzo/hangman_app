@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hangman_app/screens/login_screen.dart';
 
 import '../screens/game_screen.dart';
 import '../screens/highscore_screen.dart';
@@ -10,9 +11,10 @@ class Pages {
   static Map<String, WidgetBuilder> all(BuildContext context) {
     return {
       NamedRoutes.home: (context) => HomeScreen(null),
-      NamedRoutes.game: (context) => GameScreen(null),
-      NamedRoutes.highscores: (context) => const HighScoreScreen(),
+      NamedRoutes.game: (context) => GameScreen(null, null),
+      NamedRoutes.highscores: (context) => HighScoreScreen(),
       NamedRoutes.splash: (context) => const SplashScreen(),
+      NamedRoutes.login: (context) => LoginScreen(null),
     };
   }
 }
