@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/screens/home_screen.dart';
+import 'package:hangman_app/screens/login_screen.dart';
 import '../services/hangman-model.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,24 +15,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   initState() {
     super.initState();
-    Timer(
-      Duration(milliseconds: 1500),
-      () {
-        setState(() {
-          opacity = 0;
-        });
-      },
-    );
+    getDataFromService();
   }
 
   var hangmanData;
-  double opacity = 1;
+  double opacity = 0;
 
   Future<dynamic> getDataFromService() async {
+    setState(() {
+      opacity = 1;
+    });
     hangmanData = await HangmanModel().createGame();
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return HomeScreen(hangmanData);
-    }));
+    setState(() {
+      opacity = 0;
+    });
   }
 
   @override
@@ -42,10 +38,10 @@ class _SplashScreenState extends State<SplashScreen> {
       body: AnimatedOpacity(
         duration: kThemeAnimationDuration,
         opacity: opacity,
-        onEnd: () {
-          if (opacity == 0) {
-            getDataFromService();
-          }
+        onEnd: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return LoginScreen(hangmanData);
+          }));
         },
         child: Center(
           child: Image.asset('assets/images/gallow.png'),
