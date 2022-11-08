@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/screens/home_screen.dart';
+import 'package:hangman_app/screens/game_screens/home_screen.dart';
 import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
@@ -138,7 +138,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return HomeScreen(restartData, widget.nickname);
+                        return GameHomeScreen(restartData, widget.nickname);
                       }));
                     },
                     child: TextWidget(
@@ -188,7 +188,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return HomeScreen(restartData, widget.nickname);
+                        return GameHomeScreen(restartData, widget.nickname);
                       }));
                     },
                     child: TextWidget(

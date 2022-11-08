@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:hangman_app/screens/game_screen.dart';
-import '../constants/constants.dart';
-import '../routes/named_routes.dart';
-import '../widgets/custom_button.dart';
-import '../widgets/text_widget.dart';
+import 'package:hangman_app/screens/game_screens/game_screen.dart';
+import '../../constants/constants.dart';
+import '../../routes/named_routes.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/text_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen(this.firstHangmanData);
+class GameHomeScreen extends StatefulWidget {
+  GameHomeScreen(this.firstHangmanData, this.nickname);
 
   final firstHangmanData;
+  final nickname;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<GameHomeScreen> createState() => _GameHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _GameHomeScreenState extends State<GameHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 20,
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return GameScreen(widget.firstHangmanData, null);
+                    return GameScreen(widget.firstHangmanData, widget.nickname, null);
                   }));
                 }),
             Column(
