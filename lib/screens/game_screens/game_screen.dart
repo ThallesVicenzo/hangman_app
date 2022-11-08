@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/routes/named_routes.dart';
 import 'package:hangman_app/screens/home_screen.dart';
 import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
 class GameScreen extends StatefulWidget {
-  GameScreen(this.hangmanDataFromApi);
+  GameScreen(this.hangmanDataFromApi, this.nickname, this.points);
 
   final hangmanDataFromApi;
+  final nickname;
+  late final points;
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -30,8 +31,12 @@ class _GameScreenState extends State<GameScreen> {
 
   var restartData;
 
+  dynamic highscores;
+  late int userHighscores;
+
   int totalHints = 3;
   int lives = 6;
+  int points = 0;
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
@@ -110,14 +115,17 @@ class _GameScreenState extends State<GameScreen> {
                   title: 'You lose!',
                   fontSize: 50,
                 ),
-                content: TextWidget(title: 'The correct word was: $solution', fontSize: 30,),
+                content: TextWidget(
+                  title: 'The correct word was: $solution',
+                  fontSize: 30,
+                ),
                 actions: [
                   TextButton(
                     onPressed: () async {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameScreen(restartData);
+                        return GameScreen(restartData, widget.nickname, null);
                       }));
                     },
                     child: TextWidget(
@@ -130,7 +138,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return HomeScreen(restartData);
+                        return HomeScreen(restartData, widget.nickname);
                       }));
                     },
                     child: TextWidget(
@@ -148,6 +156,8 @@ class _GameScreenState extends State<GameScreen> {
   Future updateGameStatus() async {
     if (hangmanString == solution) {
       setState(() {
+        points = points + 1;
+        widget.points = points;
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -157,13 +167,15 @@ class _GameScreenState extends State<GameScreen> {
                   title: 'Congratulations!',
                   fontSize: 40,
                 ),
+                content: TextWidget(
+                    title: 'Your highscore is: $points', fontSize: 25),
                 actions: [
                   TextButton(
                     onPressed: () async {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameScreen(restartData);
+                        return GameScreen(restartData, widget.nickname, points);
                       }));
                     },
                     child: TextWidget(
@@ -176,8 +188,8 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                            return HomeScreen(restartData);
-                          }));
+                        return HomeScreen(restartData, widget.nickname);
+                      }));
                     },
                     child: TextWidget(
                       title: 'Return to title',
@@ -241,6 +253,14 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+  Future<void> addHighscorePoint() {
+    // Call the user's CollectionReference to add a new user
+    return highscores.add({
+      'nickname': widget.nickname,
+      'highscore': userHighscores,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -255,6 +275,7 @@ class _GameScreenState extends State<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextWidget(title: 'life = $lives', fontSize: 25),
+                  TextWidget(title: '$points', fontSize: 25),
                   IconButton(
                     onPressed: () async {
                       await updateUiWithHint();

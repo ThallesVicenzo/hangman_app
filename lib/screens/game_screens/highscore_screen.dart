@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/screens/home_screen.dart';
+import 'package:hangman_app/routes/named_routes.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../widgets/highscore_list_content.dart';
+
+import '../../widgets/highscore_list_content.dart';
 
 class HighScoreScreen extends StatefulWidget {
 
@@ -38,10 +39,7 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
                     color: Colors.white,
                     icon: Icon(size: 35, Icons.house),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return HomeScreen(null);
-                      }));
+                      Navigator.pushNamed(context, NamedRoutes.home);
                     },
                   ),
                   SizedBox(width: 35),
