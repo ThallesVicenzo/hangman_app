@@ -5,7 +5,9 @@ import '../../widgets/custom_button.dart';
 import '../../widgets/text_widget.dart';
 
 class AuthHomeScreen extends StatefulWidget {
-  const AuthHomeScreen({Key? key}) : super(key: key);
+  AuthHomeScreen(this.hangmanData);
+
+  final hangmanData;
 
   @override
   State<AuthHomeScreen> createState() => _AuthHomeScreenState();

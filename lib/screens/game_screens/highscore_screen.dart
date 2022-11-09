@@ -39,7 +39,7 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
                     color: Colors.white,
                     icon: Icon(size: 35, Icons.house),
                     onPressed: () {
-                      Navigator.pushNamed(context, NamedRoutes.home);
+                      Navigator.pushNamed(context, NamedRoutes.gameHome);
                     },
                   ),
                   SizedBox(width: 35),
