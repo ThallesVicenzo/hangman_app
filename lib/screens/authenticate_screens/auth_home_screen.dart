@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hangman_app/screens/authenticate_screens/login_screen.dart';
+import 'package:hangman_app/screens/authenticate_screens/sign_in_screen.dart';
 import '../../constants/constants.dart';
-import '../../routes/named_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/text_widget.dart';
 
@@ -34,7 +35,9 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                 label: 'Login',
                 fontSize: 20,
                 onPressed: () {
-                  Navigator.pushNamed(context, NamedRoutes.login);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return LoginScreen(widget.hangmanData);
+                  }));
                 }),
             Column(
               children: [
@@ -42,10 +45,13 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                   height: 20,
                 ),
                 CustomTextButton(
-                  label: 'High Scores',
+                  label: 'SignIn',
                   fontSize: 20,
                   onPressed: () {
-                    Navigator.pushNamed(context, NamedRoutes.signIn);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return SignInScreen(widget.hangmanData);
+                    }));
                   },
                 ),
               ],

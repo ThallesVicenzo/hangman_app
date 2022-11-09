@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/screens/game_screens/home_screen.dart';
+import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
 import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
 class GameScreen extends StatefulWidget {
-  GameScreen(this.hangmanDataFromApi, this.nickname, this.points);
+  GameScreen(this.hangmanDataFromApi, this.points);
 
   final hangmanDataFromApi;
-  final nickname;
   late final points;
 
   @override
@@ -125,7 +124,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameScreen(restartData, widget.nickname, null);
+                        return GameScreen(restartData, null);
                       }));
                     },
                     child: TextWidget(
@@ -138,7 +137,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameHomeScreen(restartData, widget.nickname);
+                        return GameHomeScreen(restartData);
                       }));
                     },
                     child: TextWidget(
@@ -175,7 +174,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameScreen(restartData, widget.nickname, points);
+                        return GameScreen(restartData, points);
                       }));
                     },
                     child: TextWidget(
@@ -188,7 +187,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameHomeScreen(restartData, widget.nickname);
+                        return GameHomeScreen(restartData);
                       }));
                     },
                     child: TextWidget(
@@ -256,7 +255,6 @@ class _GameScreenState extends State<GameScreen> {
   Future<void> addHighscorePoint() {
     // Call the user's CollectionReference to add a new user
     return highscores.add({
-      'nickname': widget.nickname,
       'highscore': userHighscores,
     });
   }

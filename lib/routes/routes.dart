@@ -12,13 +12,13 @@ import 'named_routes.dart';
 class Pages {
   static Map<String, WidgetBuilder> all(BuildContext context) {
     return {
-      NamedRoutes.gameHome: (context) => GameHomeScreen(null, null),
-      NamedRoutes.game: (context) => GameScreen(null, null, null),
+      NamedRoutes.gameHome: (context) => GameHomeScreen(null,),
+      NamedRoutes.game: (context) => GameScreen(null, null,),
       NamedRoutes.highscores: (context) => HighScoreScreen(),
       NamedRoutes.splash: (context) => const SplashScreen(),
-      NamedRoutes.authHome: (context)  => AuthHomeScreen(),
+      NamedRoutes.authHome: (context)  => AuthHomeScreen(null),
       NamedRoutes.signIn: (context) => SignInScreen(null),
-      NamedRoutes.login: (context) => LoginScreen(),
+      NamedRoutes.login: (context) => LoginScreen(null),
     };
   }
 }
