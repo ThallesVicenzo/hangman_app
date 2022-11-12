@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
 import 'package:hangman_app/services/hangman-model.dart';
+import 'package:hangman_app/services/store_highscore_points.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
 class GameScreen extends StatefulWidget {
-  GameScreen(this.hangmanDataFromApi, this.points);
+  GameScreen({@required this.hangmanDataFromApi, this.showPoints});
 
   final hangmanDataFromApi;
-  late final points;
+  int? showPoints;
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -31,20 +32,21 @@ class _GameScreenState extends State<GameScreen> {
   var restartData;
 
   dynamic highscores;
-  late int userHighscores;
 
   int totalHints = 3;
   int lives = 6;
-  int points = 0;
+  late int showPoints;
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
   HangmanModel hangmanModel = HangmanModel();
+  StoreHighscorePoints highscorePoints = StoreHighscorePoints();
 
   @override
   initState() {
     super.initState();
     keyboard = List.generate(26, (index) => false);
+    showPoints = widget.showPoints == null ? 0 : widget.showPoints!;
     getUI(widget.hangmanDataFromApi);
     callGetSolution();
   }
@@ -99,7 +101,7 @@ class _GameScreenState extends State<GameScreen> {
     solutionUI();
   }
 
-  void updateHangImage() async {
+  void updateToGameOver() async {
     if (guessData == false) {
       lives = lives - 1;
     }
@@ -124,7 +126,7 @@ class _GameScreenState extends State<GameScreen> {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameScreen(restartData, null);
+                        return GameScreen(hangmanDataFromApi: restartData, );
                       }));
                     },
                     child: TextWidget(
@@ -152,11 +154,10 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  Future updateGameStatus() async {
-    if (hangmanString == solution) {
+  Future updateToNewGame() async {
+    if (hangmanString == solution)  {
+      showPoints++;
       setState(() {
-        points = points + 1;
-        widget.points = points;
         showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -167,14 +168,14 @@ class _GameScreenState extends State<GameScreen> {
                   fontSize: 40,
                 ),
                 content: TextWidget(
-                    title: 'Your highscore is: $points', fontSize: 25),
+                    title: 'Your highscore is: $showPoints', fontSize: 25),
                 actions: [
                   TextButton(
                     onPressed: () async {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameScreen(restartData, points);
+                        return GameScreen(hangmanDataFromApi: restartData, showPoints: showPoints,);
                       }));
                     },
                     child: TextWidget(
@@ -208,8 +209,8 @@ class _GameScreenState extends State<GameScreen> {
       await getLetter(token, guessLetter);
       setState(() {
         updateUI();
-        updateHangImage();
-        updateGameStatus();
+        updateToGameOver();
+        updateToNewGame();
         keyboard[index] = true;
       });
     } else if (keyboard[index] = true) return null;
@@ -252,13 +253,6 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  Future<void> addHighscorePoint() {
-    // Call the user's CollectionReference to add a new user
-    return highscores.add({
-      'highscore': userHighscores,
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -273,7 +267,7 @@ class _GameScreenState extends State<GameScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextWidget(title: 'life = $lives', fontSize: 25),
-                  TextWidget(title: '$points', fontSize: 25),
+                  TextWidget(title: '$showPoints', fontSize: 25),
                   IconButton(
                     onPressed: () async {
                       await updateUiWithHint();
