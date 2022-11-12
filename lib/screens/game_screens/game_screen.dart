@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
 import 'package:hangman_app/services/hangman-model.dart';
-import 'package:hangman_app/services/store_highscore_points.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
@@ -40,7 +39,6 @@ class _GameScreenState extends State<GameScreen> {
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
   HangmanModel hangmanModel = HangmanModel();
-  StoreHighscorePoints highscorePoints = StoreHighscorePoints();
 
   @override
   initState() {
