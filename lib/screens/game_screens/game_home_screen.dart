@@ -38,7 +38,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                 fontSize: 20,
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return GameScreen(widget.hangmanData, null);
+                    return GameScreen(hangmanDataFromApi: widget.hangmanData);
                   }));
                 }),
             Column(
