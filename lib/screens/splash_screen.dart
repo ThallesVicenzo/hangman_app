@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/authenticate_screens/auth_home_screen.dart';
+import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
 import '../services/hangman-model.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,6 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
     getDataFromService();
   }
 
+  final _auth = FirebaseAuth.instance;
+  late final getRoute;
+
   var hangmanData;
   double opacity = 0;
 
@@ -31,6 +36,20 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  Future getInitialRoute() async {
+    if(_auth.currentUser != null){
+      return Navigator.push(context,
+          MaterialPageRoute(builder: (context) {
+            return GameHomeScreen(hangmanData);
+          }));
+    } else {
+      return Navigator.push(context,
+          MaterialPageRoute(builder: (context) {
+            return AuthHomeScreen(hangmanData);
+          }));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,10 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
         duration: kThemeAnimationDuration,
         opacity: opacity,
         onEnd: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) {
-                return AuthHomeScreen(hangmanData);
-              }));
+          getInitialRoute();
         },
         child: Center(
           child: Image.asset('assets/images/gallow.png'),
