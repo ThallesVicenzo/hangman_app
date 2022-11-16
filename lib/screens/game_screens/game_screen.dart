@@ -5,6 +5,7 @@ import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
 import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class GameScreen extends StatefulWidget {
   GameScreen({@required this.hangmanDataFromApi, this.showPoints});
@@ -36,7 +37,9 @@ class _GameScreenState extends State<GameScreen> {
   int totalHints = 3;
   int lives = 6;
   late int showPoints;
+
   bool isPressed = false;
+  bool spinning = false;
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
@@ -125,9 +128,9 @@ class _GameScreenState extends State<GameScreen> {
                 ),
                 content: SingleChildScrollView(
                     child: TextWidget(
-                      title: 'The correct word was: $solution',
-                      fontSize: 30,
-                    )),
+                  title: 'The correct word was: $solution',
+                  fontSize: 30,
+                )),
                 actions: [
                   TextButton(
                     style: ButtonStyle(
@@ -139,7 +142,13 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ),
                     onPressed: () async {
+                      setState(() {
+                        spinning = true;
+                      });
                       await restartGame();
+                      setState(() {
+                        spinning = false;
+                      });
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return GameScreen(
@@ -153,18 +162,21 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                   TextButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(width: 3, color: Colors.white),
-                          ),
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(width: 3, color: Colors.white),
                         ),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (isPressed == false) {
-                          addHighscore();
-                          isPressed = true;
+                          setState(() {
+                            spinning = true;
+                          });
+                          await addHighscore();
+                          setState(() {
+                            spinning = false;
+                          });
                         } else {
                           return null;
                         }
@@ -183,7 +195,13 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ),
                     onPressed: () async {
+                      setState(() {
+                        spinning = true;
+                      });
                       await restartGame();
+                      setState(() {
+                        spinning = false;
+                      });
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return GameHomeScreen(restartData);
@@ -227,7 +245,13 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ),
                     onPressed: () async {
+                      setState(() {
+                        spinning = true;
+                      });
                       await restartGame();
+                      setState(() {
+                        spinning = false;
+                      });
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return GameScreen(
@@ -251,7 +275,13 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ),
                     onPressed: () async {
+                      setState(() {
+                        spinning = true;
+                      });
                       await restartGame();
+                      setState(() {
+                        spinning = false;
+                      });
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return GameHomeScreen(restartData);
@@ -329,72 +359,81 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: kBackgroundColor,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextWidget(title: 'life = $lives', fontSize: 25),
-                  TextWidget(title: '$showPoints', fontSize: 25),
-                  IconButton(
-                    onPressed: () async {
-                      await updateUiWithHint();
-                    },
-                    icon: Icon(
-                      Icons.lightbulb,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: Image.asset(
-                kImageList[lives],
-              ),
-            ),
-            Center(
-              child: Text(
-                '$hangmanString',
-                style: TextStyle(
-                  fontSize: 50,
-                  fontFamily: 'PatrickHand',
-                  color: Colors.white,
-                  letterSpacing: 10,
+    return ModalProgressHUD(
+      inAsyncCall: spinning,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: kBackgroundColor,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextWidget(title: 'life = $lives', fontSize: 25),
+                    TextWidget(title: '$showPoints', fontSize: 25),
+                    IconButton(
+                      onPressed: () async {
+                        await updateUiWithHint();
+                      },
+                      icon: Icon(
+                        Icons.lightbulb,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ),
-            Flexible(
-              child: Container(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 1,
-                    crossAxisCount: 7,
-                    mainAxisSpacing: 1,
+              Expanded(
+                child: Image.asset(
+                  kImageList[lives],
+                ),
+              ),
+              Center(
+                child: Text(
+                  '$hangmanString',
+                  style: TextStyle(
+                    fontSize: 50,
+                    fontFamily: 'PatrickHand',
+                    color: Colors.white,
+                    letterSpacing: 10,
                   ),
-                  itemCount: keyboard.length,
-                  padding: const EdgeInsets.all(5),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: EdgeInsets.all(5),
-                      child: CustomTextButton(
-                          color: keyboard[index] ? Colors.grey : Colors.blue,
-                          label: kKeyboard[index],
-                          onPressed: () async {
-                            await updateHangmanString(index);
-                          }),
-                    );
-                  },
                 ),
               ),
-            ),
-          ],
+              Flexible(
+                child: Container(
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 1,
+                      crossAxisCount: 7,
+                      mainAxisSpacing: 1,
+                    ),
+                    itemCount: keyboard.length,
+                    padding: const EdgeInsets.all(5),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        margin: EdgeInsets.all(5),
+                        child: CustomTextButton(
+                            color: keyboard[index] ? Colors.grey : Colors.blue,
+                            label: kKeyboard[index],
+                            onPressed: () async {
+                              setState(() {
+                                spinning = true;
+                              });
+                              await updateHangmanString(index);
+                              setState(() {
+                                spinning = false;
+                              });
+                            }),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
