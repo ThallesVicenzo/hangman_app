@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
+import 'package:hangman_app/services/storage_service.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../widgets/text_widget.dart';
@@ -20,18 +21,16 @@ class _SignInScreenState extends State<SignInScreen> {
   late String nickname;
   late String email;
   late String password;
-  int points = 0;
 
   bool spinning = false;
 
   final _auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-  Future<void> addUser() {
+  Future<void> addNickname() {
     return users
         .add({
       'nickname': nickname,
-      'points': points,
     });
   }
 
@@ -96,7 +95,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   try {
                     await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
-                    addUser();
+                    addNickname();
+                    StorageService.setNickname(nickname);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return GameHomeScreen(widget.hangmanData);
