@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
@@ -9,7 +10,7 @@ class GameScreen extends StatefulWidget {
   GameScreen({@required this.hangmanDataFromApi, this.showPoints});
 
   final hangmanDataFromApi;
-  int? showPoints;
+  final int? showPoints;
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -35,10 +36,12 @@ class _GameScreenState extends State<GameScreen> {
   int totalHints = 3;
   int lives = 6;
   late int showPoints;
+  bool isPressed = false;
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
   HangmanModel hangmanModel = HangmanModel();
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
 
   @override
   initState() {
@@ -99,6 +102,12 @@ class _GameScreenState extends State<GameScreen> {
     solutionUI();
   }
 
+  Future<void> addHighscore() {
+    return users.add({
+      'highscore': showPoints,
+    });
+  }
+
   void updateToGameOver() async {
     if (guessData == false) {
       lives = lives - 1;
@@ -114,17 +123,28 @@ class _GameScreenState extends State<GameScreen> {
                   title: 'You lose!',
                   fontSize: 50,
                 ),
-                content: TextWidget(
-                  title: 'The correct word was: $solution',
-                  fontSize: 30,
-                ),
+                content: SingleChildScrollView(
+                    child: TextWidget(
+                      title: 'The correct word was: $solution',
+                      fontSize: 30,
+                    )),
                 actions: [
                   TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(width: 3, color: Colors.white),
+                        ),
+                      ),
+                    ),
                     onPressed: () async {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameScreen(hangmanDataFromApi: restartData, );
+                        return GameScreen(
+                          hangmanDataFromApi: restartData,
+                        );
                       }));
                     },
                     child: TextWidget(
@@ -133,6 +153,35 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                   TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(width: 3, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (isPressed == false) {
+                          addHighscore();
+                          isPressed = true;
+                        } else {
+                          return null;
+                        }
+                      },
+                      child: TextWidget(
+                        title: 'Submit Highscore',
+                        fontSize: 25,
+                      )),
+                  TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(width: 3, color: Colors.white),
+                        ),
+                      ),
+                    ),
                     onPressed: () async {
                       await restartGame();
                       Navigator.push(context,
@@ -153,7 +202,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Future updateToNewGame() async {
-    if (hangmanString == solution)  {
+    if (hangmanString == solution) {
       showPoints++;
       setState(() {
         showDialog(
@@ -169,11 +218,22 @@ class _GameScreenState extends State<GameScreen> {
                     title: 'Your highscore is: $showPoints', fontSize: 25),
                 actions: [
                   TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(width: 3, color: Colors.white),
+                        ),
+                      ),
+                    ),
                     onPressed: () async {
                       await restartGame();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return GameScreen(hangmanDataFromApi: restartData, showPoints: showPoints,);
+                        return GameScreen(
+                          hangmanDataFromApi: restartData,
+                          showPoints: showPoints,
+                        );
                       }));
                     },
                     child: TextWidget(
@@ -182,6 +242,14 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                   TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(width: 3, color: Colors.white),
+                        ),
+                      ),
+                    ),
                     onPressed: () async {
                       await restartGame();
                       Navigator.push(context,
@@ -233,6 +301,14 @@ class _GameScreenState extends State<GameScreen> {
               ),
               actions: [
                 TextButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        side: BorderSide(width: 3, color: Colors.white),
+                      ),
+                    ),
+                  ),
                   onPressed: () {
                     totalHints = totalHints - 1;
                     lives = lives - 1;
