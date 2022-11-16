@@ -1,26 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/routes/named_routes.dart';
+import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../services/highscore_tile.dart';
 import '../../widgets/highscore_list_content.dart';
+import 'game_home_screen.dart';
 
 class HighScoreScreen extends StatefulWidget {
-
   @override
   State<HighScoreScreen> createState() => _HighScoreScreenState();
 }
 
 class _HighScoreScreenState extends State<HighScoreScreen> {
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  List<String> highscore_docIds = [];
+  late final Future? getDocIds;
+  var restartData;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    getDocIds = getDocId();
+    restartGame();
+  }
 
+  Future<dynamic> restartGame() async {
+    restartData = await HangmanModel().createGame();
+    return restartData;
+  }
 
+  Future getDocId() async {
+    await firestore
+        .collection('users')
+        .orderBy('highscore', descending: true)
+        .limit(10)
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              highscore_docIds.add(element.reference.id);
+            }));
   }
 
   @override
@@ -39,65 +58,34 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
                     color: Colors.white,
                     icon: Icon(size: 35, Icons.house),
                     onPressed: () {
-                      Navigator.pushNamed(context, NamedRoutes.gameHome);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                            return GameHomeScreen(restartData);
+                          }));
                     },
                   ),
                   SizedBox(width: 35),
-                  TextWidget(title: 'High Scores', fontSize: 45),
+                  TextWidget(title: 'HighScores', fontSize: 45),
                 ],
               ),
             ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: Column(
-                children: [
-                  HighscoreListContent(
-                    title1: 'Rank',
-                    title2: 'Date',
-                    title3: 'Score',
-                    fontSize: 30.0,
-                  ),
-                  HighscoreListContent(
-                      title1: '🥇1',
-                      title2: '20-Mar-31',
-                      title3: '1',
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w300),
-                  HighscoreListContent(
-                      title1: '🥈2',
-                      title2: '20-Mar-31',
-                      title3: '1',
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w300),
-                  HighscoreListContent(
-                      title1: '🥉3',
-                      title2: '20-Mar-31',
-                      title3: '1',
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w300),
-                ],
-              ),
+            HighscoreListContent(
+              title1: 'Nickname',
+              title2: 'Score',
+              fontSize: 30.0,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Column(
-                children: [
-                  HighscoreListContent(
-                      title1: '4',
-                      title2: '20-Mar-31',
-                      title3: '1',
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w300),
-                  HighscoreListContent(
-                      title1: '5',
-                      title2: '20-Mar-31',
-                      title3: '1',
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w300),
-                ],
-              ),
-            ),
+            FutureBuilder(
+                future: getDocIds,
+                builder: (context, snapshots) {
+                  return Expanded(
+                    child: ListView.builder(
+                        itemCount: highscore_docIds.length,
+                        itemBuilder: (context, index) {
+                          return HighscoreTile(
+                              documentID: highscore_docIds[index]);
+                        }),
+                  );
+                }),
           ],
         ),
       ),
