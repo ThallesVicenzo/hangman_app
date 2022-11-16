@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/services/hangman-model.dart';
+import 'package:hangman_app/services/storage_service.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -18,11 +19,13 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
   List<String> highscore_docIds = [];
   late final Future? getDocIds;
   var restartData;
+  late String nickname;
 
   @override
   void initState() {
     super.initState();
     getDocIds = getDocId();
+    nickname = StorageService.getNickname()!;
     restartGame();
   }
 
@@ -82,7 +85,7 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
                         itemCount: highscore_docIds.length,
                         itemBuilder: (context, index) {
                           return HighscoreTile(
-                              documentID: highscore_docIds[index]);
+                              documentID: highscore_docIds[index], nickname: nickname,);
                         }),
                   );
                 }),
