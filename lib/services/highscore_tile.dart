@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import '../widgets/highscore_list_content.dart';
 
 class HighscoreTile extends StatelessWidget {
-  HighscoreTile({required this.documentID, required this.nickname});
+  HighscoreTile({required this.documentID});
 
   final documentID;
-  final nickname;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class HighscoreTile extends StatelessWidget {
                 child: Column(
                   children: [
                     HighscoreListContent(
-                        title1: data['nickname'] != null ? data['nickname'] : nickname.toString(),
+                        title1: data['nickname'],
                         title2: data['highscore'].toString(),
                         fontSize: 28.0,
                         fontWeight: FontWeight.w300),
