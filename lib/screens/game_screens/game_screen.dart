@@ -118,107 +118,128 @@ class _GameScreenState extends State<GameScreen> {
       lives = lives - 1;
     }
     if (lives <= 0) {
-      setState(() {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return StatefulBuilder(builder: (BuildContext context, setState) {
-                return AlertDialog(
-                  backgroundColor: kBackgroundColor,
-                  title: TextWidget(
-                    title: 'You lose!',
-                    fontSize: 50,
-                  ),
-                  content: SingleChildScrollView(
-                      child: Column(
-                    children: [
-                      TextWidget(
-                        title: 'The correct word was: $solution',
-                        fontSize: 30,
-                      ),
-                    ],
-                  )),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(width: 3, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        onPressed: () async {
-                          await restartGame();
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return GameScreen(
-                              hangmanDataFromApi: restartData,
-                            );
-                          }));
-                        },
-                        child: TextWidget(
-                          title: 'Restart',
-                          fontSize: 25,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                          style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(width: 3, color: Colors.white),
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (isPressed == false) {
-                              await addHighscore();
-                              await StorageService.setNickname(nickname!);
-                              setState(() {
-                                isPressed = true;
-                              });
-                            } else {
-                              return null;
-                            }
-                          },
-                          child: TextWidget(
-                            title: 'Submit Highscore',
-                            fontSize: 25,
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(width: 3, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        onPressed: () async {
-                          await restartGame();
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return GameHomeScreen(restartData);
-                          }));
-                        },
-                        child: TextWidget(
-                          title: 'Return to title',
-                          fontSize: 25,
-                        ),
-                      ),
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (BuildContext context, setState) {
+              return AlertDialog(
+                backgroundColor: kBackgroundColor,
+                title: TextWidget(
+                  title: 'You lose!',
+                  fontSize: 50,
+                ),
+                content: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    TextWidget(
+                      title: 'The correct word was: $solution',
+                      fontSize: 30,
                     ),
                   ],
-                );
-              });
+                )),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        isLoading ? restartGame() : null;
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      child: TextWidget(
+                        title: 'Restart',
+                        fontSize: 25,
+                        isLoading: isLoading,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (isPressed == false) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            isLoading ? await addHighscore() : null;
+                            isLoading
+                                ? await StorageService.setNickname(nickname!)
+                                : null;
+                            setState(() {
+                              isLoading = false;
+                              isPressed = true;
+                            });
+                          } else {
+                            return null;
+                          }
+                        },
+                        child: TextWidget(
+                          title: 'Submit Highscore',
+                          fontSize: 25,
+                          isLoading: isLoading,
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        isLoading ? await restartGame() : null;
+                        setState(() {
+                          isLoading = false;
+                        });
+                        isLoading
+                            ? Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return GameHomeScreen(restartData);
+                              }))
+                            : null;
+                      },
+                      child: TextWidget(
+                        title: 'Return to title',
+                        fontSize: 25,
+                        isLoading: isLoading,
+                      ),
+                    ),
+                  ),
+                ],
+              );
             });
-      });
+          });
     }
   }
 
@@ -229,94 +250,128 @@ class _GameScreenState extends State<GameScreen> {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: kBackgroundColor,
-                title: TextWidget(
-                  title: 'Congratulations!',
-                  fontSize: 40,
-                ),
-                content: TextWidget(
-                    title: 'Your highscore is: $showPoints', fontSize: 25),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(width: 3, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      onPressed: () async {
-                        await restartGame();
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return GameScreen(
-                            hangmanDataFromApi: restartData,
-                            showPoints: showPoints,
-                          );
-                        }));
-                      },
-                      child: TextWidget(
-                        title: 'Next Word',
-                        fontSize: 25,
-                      ),
-                    ),
+              return StatefulBuilder(builder: (BuildContext context, setState) {
+                return AlertDialog(
+                  backgroundColor: kBackgroundColor,
+                  title: TextWidget(
+                    title: 'Congratulations!',
+                    fontSize: 40,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(width: 3, color: Colors.white),
+                  content: TextWidget(
+                      title: 'Your highscore is: $showPoints', fontSize: 25),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(
+                                  width: 3,
+                                  color: isLoading ? Colors.red : Colors.white),
+                            ),
                           ),
                         ),
                         onPressed: () async {
-                          if (isPressed == false) {
-                            await addHighscore();
-                            await StorageService.setNickname(nickname!);
-                            setState(() {
-                              isPressed = true;
-                            });
-                            isPressed = false;
-                          } else {
-                            return null;
-                          }
+                          setState(() {
+                            isLoading = true;
+                          });
+                          isLoading ? await restartGame() : null;
+                          isLoading
+                              ? Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return GameScreen(
+                                    hangmanDataFromApi: restartData,
+                                    showPoints: showPoints,
+                                  );
+                                }))
+                              : null;
+                          setState(() {
+                            isLoading = false;
+                          });
                         },
                         child: TextWidget(
-                          title: 'Submit Highscore',
+                          title: 'Next Word',
                           fontSize: 25,
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(width: 3, color: Colors.white),
-                          ),
+                          isLoading: isLoading,
                         ),
                       ),
-                      onPressed: () async {
-                        await restartGame();
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return GameHomeScreen(restartData);
-                        }));
-                      },
-                      child: TextWidget(
-                        title: 'Return to title',
-                        fontSize: 25,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(
+                                  width: 3,
+                                  color: isLoading ? Colors.red : Colors.white),
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (isPressed == false) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              isLoading ? await addHighscore() : null;
+
+                              isLoading
+                                  ? await StorageService.setNickname(nickname!)
+                                  : null;
+
+                              setState(() {
+                                isLoading = false;
+                                isPressed = true;
+                              });
+                            } else {
+                              return null;
+                            }
+                          },
+                          child: TextWidget(
+                            title: 'Submit Highscore',
+                            fontSize: 25,
+                            isLoading: isLoading,
+                          )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(
+                                  width: 3,
+                                  color: isLoading ? Colors.red : Colors.white),
+                            ),
+                          ),
+                        ),
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          isLoading ? await restartGame() : null;
+                          isLoading
+                              ? Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                                return GameHomeScreen(restartData);
+                              }))
+                              : null;
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        child: TextWidget(
+                          title: 'Return to title',
+                          fontSize: 25,
+                          isLoading: isLoading,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
+                  ],
+                );
+              });
             });
       });
     }
@@ -471,10 +526,10 @@ class _GameScreenState extends State<GameScreen> {
               child: Text(
                 '$hangmanString',
                 style: TextStyle(
-                  fontSize: 50,
+                  fontSize: 40,
                   fontFamily: 'PatrickHand',
                   color: Colors.white,
-                  letterSpacing: 10,
+                  letterSpacing: 3,
                 ),
               ),
             ),
