@@ -119,6 +119,7 @@ class _GameScreenState extends State<GameScreen> {
     }
     if (lives <= 0) {
       showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
             return StatefulBuilder(builder: (BuildContext context, setState) {
@@ -155,7 +156,12 @@ class _GameScreenState extends State<GameScreen> {
                         setState(() {
                           isLoading = true;
                         });
-                        isLoading ? restartGame() : null;
+                        isLoading ? await restartGame() : null;
+                        isLoading ? Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                        return GameScreen(hangmanDataFromApi: restartData,);
+                        }))
+                            : null;
                         setState(() {
                           isLoading = false;
                         });
@@ -219,15 +225,15 @@ class _GameScreenState extends State<GameScreen> {
                           isLoading = true;
                         });
                         isLoading ? await restartGame() : null;
+                        isLoading
+                            ? Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                              return GameHomeScreen(restartData);
+                            }))
+                            : null;
                         setState(() {
                           isLoading = false;
                         });
-                        isLoading
-                            ? Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                                return GameHomeScreen(restartData);
-                              }))
-                            : null;
                       },
                       child: TextWidget(
                         title: 'Return to title',
@@ -248,6 +254,7 @@ class _GameScreenState extends State<GameScreen> {
       showPoints++;
       setState(() {
         showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
               return StatefulBuilder(builder: (BuildContext context, setState) {
@@ -280,12 +287,12 @@ class _GameScreenState extends State<GameScreen> {
                           isLoading ? await restartGame() : null;
                           isLoading
                               ? Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return GameScreen(
-                                    hangmanDataFromApi: restartData,
-                                    showPoints: showPoints,
-                                  );
-                                }))
+                              MaterialPageRoute(builder: (context) {
+                                return GameScreen(
+                                  hangmanDataFromApi: restartData,
+                                  showPoints: showPoints,
+                                );
+                              }))
                               : null;
                           setState(() {
                             isLoading = false;
