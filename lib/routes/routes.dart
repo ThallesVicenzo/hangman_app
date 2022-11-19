@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/screens/authenticate_screens/auth_home_screen.dart';
 import 'package:hangman_app/screens/authenticate_screens/login_screen.dart';
-import 'package:hangman_app/screens/authenticate_screens/sign_in_screen.dart';
+import 'package:hangman_app/screens/authenticate_screens/sign_up_screen.dart';
 
 import '../screens/game_screens/game_screen.dart';
 import '../screens/game_screens/highscore_screen.dart';
@@ -17,7 +17,7 @@ class Pages {
       NamedRoutes.highscores: (context) => HighScoreScreen(),
       NamedRoutes.splash: (context) => const SplashScreen(),
       NamedRoutes.authHome: (context)  => AuthHomeScreen(null),
-      NamedRoutes.signIn: (context) => SignInScreen(null),
+      NamedRoutes.signIn: (context) => SignUpScreen(null),
       NamedRoutes.login: (context) => LoginScreen(null),
     };
   }

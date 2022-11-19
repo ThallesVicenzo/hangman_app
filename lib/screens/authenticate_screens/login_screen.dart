@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextField(
                 style: kTextButtonStyle,
+                obscureText: true,
                 onChanged: (value) {
                   password = value;
                 },
