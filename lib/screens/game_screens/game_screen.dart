@@ -351,9 +351,9 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Future updateUiWithHint() async {
-    await getHint(token);
-    hintUI();
     if (totalHints > 0 && lives > 1) {
+      await getHint(token);
+      hintUI();
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -394,7 +394,7 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ),
                     ),
-                    onPressed: ()  {
+                    onPressed: () {
                       setState(() {
                         totalHints = totalHints - 1;
                         lives = lives - 1;
@@ -412,6 +412,20 @@ class _GameScreenState extends State<GameScreen> {
           });
     } else {
       return null;
+    }
+  }
+
+  Color getLoadingOrDisabledIconColor() {
+    if (totalHints == 0) {
+      return Colors.red;
+    }
+    if (isLoading == true) {
+      return Colors.red;
+    }
+    if (lives <= 1) {
+      return Colors.red;
+    } else {
+      return Colors.white;
     }
   }
 
@@ -442,7 +456,7 @@ class _GameScreenState extends State<GameScreen> {
                     },
                     icon: Icon(
                       Icons.lightbulb,
-                      color: isLoading ? Colors.red : Colors.white,
+                      color: getLoadingOrDisabledIconColor(),
                     ),
                   )
                 ],
