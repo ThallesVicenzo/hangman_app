@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class CustomTextButton extends StatelessWidget {
   const CustomTextButton({
@@ -9,6 +10,7 @@ class CustomTextButton extends StatelessWidget {
     this.width = 130,
     this.height = 60,
     this.fontSize = 16,
+    this.isLoading = false,
     Key? key,
   }) : super(key: key);
 
@@ -22,6 +24,8 @@ class CustomTextButton extends StatelessWidget {
 
   final double fontSize;
 
+  final bool isLoading;
+
   final Color color;
 
   @override
@@ -29,24 +33,28 @@ class CustomTextButton extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: TextButton(
-        style: TextButton.styleFrom(
-          backgroundColor: color,
-        ),
-        onPressed: onPressed,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  label,
-                  style: kTextButtonStyle.copyWith(fontWeight: FontWeight.bold),
-                ),
+      child: ModalProgressHUD(
+        inAsyncCall: isLoading,
+        color: Colors.deepPurple,
+        child: TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: color,
+          ),
+          onPressed: onPressed,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      label,
+                      style:
+                          kTextButtonStyle.copyWith(fontWeight: FontWeight.bold),
+                    )),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

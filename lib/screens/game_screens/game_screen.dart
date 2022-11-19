@@ -5,7 +5,6 @@ import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
 import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../services/storage_service.dart';
 
@@ -34,17 +33,13 @@ class _GameScreenState extends State<GameScreen> {
 
   var restartData;
 
-  dynamic highscores;
-
   int totalHints = 3;
   int lives = 6;
   late int showPoints;
   late String? nickname;
 
   bool isPressed = false;
-  bool spinning = false;
-  bool _validate = false;
-  final _text = TextEditingController();
+  bool isLoading = false;
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
@@ -118,25 +113,6 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-
-  checkIfNicknameIsNull() {
-    if (nickname != null) {
-      return TextField(
-        controller: _text,
-        style: kTextButtonStyle,
-        onChanged: (value) {
-          nickname = value;
-        },
-        decoration: kTextFieldDecoration.copyWith(
-          hintText: 'Type your nickname here: ',
-          errorText: _validate ? 'Highscore submitted!' : 'Value Can\'t Be Empty' ,
-        ),
-      );
-    } else{
-      return SizedBox();
-    }
-  }
-
   void updateToGameOver() async {
     if (guessData == false) {
       lives = lives - 1;
@@ -146,26 +122,26 @@ class _GameScreenState extends State<GameScreen> {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return StatefulBuilder(
-                builder: (BuildContext context, setState) {
-                  return AlertDialog(
-                    backgroundColor: kBackgroundColor,
-                    title: TextWidget(
-                      title: 'You lose!',
-                      fontSize: 50,
-                    ),
-                    content: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            TextWidget(
-                              title: 'The correct word was: $solution',
-                              fontSize: 30,
-                            ),
-                            checkIfNicknameIsNull(),
-                          ],
-                        )),
-                    actions: [
-                      TextButton(
+              return StatefulBuilder(builder: (BuildContext context, setState) {
+                return AlertDialog(
+                  backgroundColor: kBackgroundColor,
+                  title: TextWidget(
+                    title: 'You lose!',
+                    fontSize: 50,
+                  ),
+                  content: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      TextWidget(
+                        title: 'The correct word was: $solution',
+                        fontSize: 30,
+                      ),
+                    ],
+                  )),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
                         style: ButtonStyle(
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
@@ -175,26 +151,23 @@ class _GameScreenState extends State<GameScreen> {
                           ),
                         ),
                         onPressed: () async {
-                          setState(() {
-                            spinning = true;
-                          });
                           await restartGame();
-                          setState(() {
-                            spinning = false;
-                          });
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                                return GameScreen(
-                                  hangmanDataFromApi: restartData,
-                                );
-                              }));
+                            return GameScreen(
+                              hangmanDataFromApi: restartData,
+                            );
+                          }));
                         },
                         child: TextWidget(
                           title: 'Restart',
                           fontSize: 25,
                         ),
                       ),
-                      TextButton(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -203,21 +176,11 @@ class _GameScreenState extends State<GameScreen> {
                           ),
                           onPressed: () async {
                             if (isPressed == false) {
+                              await addHighscore();
+                              await StorageService.setNickname(nickname!);
                               setState(() {
-                                spinning = true;
+                                isPressed = true;
                               });
-                              if (_text.text.isNotEmpty) {
-                                await addHighscore();
-                                await StorageService.setNickname(nickname!);
-                                setState(() {
-                                  _validate = true;
-                                  isPressed = true;
-                                  spinning = false;
-                                });
-                              } else {
-                                  _validate = false;
-                                  isPressed = false;
-                              }
                             } else {
                               return null;
                             }
@@ -226,7 +189,10 @@ class _GameScreenState extends State<GameScreen> {
                             title: 'Submit Highscore',
                             fontSize: 25,
                           )),
-                      TextButton(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextButton(
                         style: ButtonStyle(
                           shape: MaterialStateProperty.all(
                             RoundedRectangleBorder(
@@ -236,26 +202,21 @@ class _GameScreenState extends State<GameScreen> {
                           ),
                         ),
                         onPressed: () async {
-                          setState(() {
-                            spinning = true;
-                          });
                           await restartGame();
-                          setState(() {
-                            spinning = false;
-                          });
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                                return GameHomeScreen(restartData);
-                              }));
+                            return GameHomeScreen(restartData);
+                          }));
                         },
                         child: TextWidget(
                           title: 'Return to title',
                           fontSize: 25,
                         ),
                       ),
-                    ],
-                  );
-                });
+                    ),
+                  ],
+                );
+              });
             });
       });
     }
@@ -277,61 +238,81 @@ class _GameScreenState extends State<GameScreen> {
                 content: TextWidget(
                     title: 'Your highscore is: $showPoints', fontSize: 25),
                 actions: [
-                  TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          side: BorderSide(width: 3, color: Colors.white),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(width: 3, color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                    onPressed: () async {
-                      setState(() {
-                        spinning = true;
-                      });
-                      await restartGame();
-                      setState(() {
-                        spinning = false;
-                      });
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return GameScreen(
-                          hangmanDataFromApi: restartData,
-                          showPoints: showPoints,
-                        );
-                      }));
-                    },
-                    child: TextWidget(
-                      title: 'New Game',
-                      fontSize: 25,
+                      onPressed: () async {
+                        await restartGame();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return GameScreen(
+                            hangmanDataFromApi: restartData,
+                            showPoints: showPoints,
+                          );
+                        }));
+                      },
+                      child: TextWidget(
+                        title: 'Next Word',
+                        fontSize: 25,
+                      ),
                     ),
                   ),
-                  TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          side: BorderSide(width: 3, color: Colors.white),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(width: 3, color: Colors.white),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (isPressed == false) {
+                            await addHighscore();
+                            await StorageService.setNickname(nickname!);
+                            setState(() {
+                              isPressed = true;
+                            });
+                            isPressed = false;
+                          } else {
+                            return null;
+                          }
+                        },
+                        child: TextWidget(
+                          title: 'Submit Highscore',
+                          fontSize: 25,
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(width: 3, color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                    onPressed: () async {
-                      setState(() {
-                        spinning = true;
-                      });
-                      await restartGame();
-                      setState(() {
-                        spinning = false;
-                      });
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return GameHomeScreen(restartData);
-                      }));
-                    },
-                    child: TextWidget(
-                      title: 'Return to title',
-                      fontSize: 25,
+                      onPressed: () async {
+                        await restartGame();
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return GameHomeScreen(restartData);
+                        }));
+                      },
+                      child: TextWidget(
+                        title: 'Return to title',
+                        fontSize: 25,
+                      ),
                     ),
                   ),
                 ],
@@ -351,48 +332,83 @@ class _GameScreenState extends State<GameScreen> {
         updateToNewGame();
         keyboard[index] = true;
       });
-    } else if (keyboard[index] = true) return null;
+    } else {
+      return null;
+    }
+  }
+
+  getIndexForLoadingInKeyboard(index) async {
+    if (keyboard[index] == false) {
+      setState(() {
+        isLoading = true;
+      });
+      await updateHangmanString(index);
+      setState(() {
+        isLoading = false;
+      });
+    } else
+      return null;
   }
 
   Future updateUiWithHint() async {
     await getHint(token);
     hintUI();
-    if (totalHints > 0) {
+    if (totalHints > 0 && lives > 1) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: kBackgroundColor,
-              title: TextWidget(
-                title: 'The letter that you are looking for is: $hint',
-                fontSize: 25,
-              ),
-              content: TextWidget(
-                title: 'Warning: You have $totalHints more hint(s).',
-                fontSize: 25,
-              ),
-              actions: [
-                TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(width: 3, color: Colors.white),
+            return StatefulBuilder(builder: (context, setState) {
+              return AlertDialog(
+                backgroundColor: kBackgroundColor,
+                title: TextWidget(
+                  title: 'The letter that you are looking for is: $hint',
+                  fontSize: 25,
+                ),
+                content: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextWidget(
+                          title: 'Warning: You have $totalHints more hint(s).',
+                          fontSize: 25,
+                        ),
                       ),
-                    ),
-                  ),
-                  onPressed: () {
-                    totalHints = totalHints - 1;
-                    lives = lives - 1;
-                    Navigator.pop(context);
-                  },
-                  child: TextWidget(
-                    title: 'OK',
-                    fontSize: 30,
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextWidget(
+                            title:
+                                'Warning: Each hint you take you will lose 1 life',
+                            fontSize: 25),
+                      )
+                    ],
                   ),
                 ),
-              ],
-            );
+                actions: [
+                  TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(width: 3, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    onPressed: ()  {
+                      setState(() {
+                        totalHints = totalHints - 1;
+                        lives = lives - 1;
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: TextWidget(
+                      title: 'OK',
+                      fontSize: 30,
+                    ),
+                  ),
+                ],
+              );
+            });
           });
     } else {
       return null;
@@ -401,81 +417,79 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: spinning,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: kBackgroundColor,
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextWidget(title: 'life = $lives', fontSize: 25),
-                    TextWidget(title: '$showPoints', fontSize: 25),
-                    IconButton(
-                      onPressed: () async {
-                        await updateUiWithHint();
-                      },
-                      icon: Icon(
-                        Icons.lightbulb,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Image.asset(
-                  kImageList[lives],
-                ),
-              ),
-              Center(
-                child: Text(
-                  '$hangmanString',
-                  style: TextStyle(
-                    fontSize: 50,
-                    fontFamily: 'PatrickHand',
-                    color: Colors.white,
-                    letterSpacing: 10,
-                  ),
-                ),
-              ),
-              Flexible(
-                child: Container(
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 1,
-                      crossAxisCount: 7,
-                      mainAxisSpacing: 1,
-                    ),
-                    itemCount: keyboard.length,
-                    padding: const EdgeInsets.all(5),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.all(5),
-                        child: CustomTextButton(
-                            color: keyboard[index] ? Colors.grey : Colors.blue,
-                            label: kKeyboard[index],
-                            onPressed: () async {
-                              setState(() {
-                                spinning = true;
-                              });
-                              await updateHangmanString(index);
-                              setState(() {
-                                spinning = false;
-                              });
-                            }),
-                      );
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: kBackgroundColor,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextWidget(title: 'life = $lives', fontSize: 25),
+                  TextWidget(title: '$showPoints', fontSize: 25),
+                  IconButton(
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      isLoading ? await updateUiWithHint() : null;
+                      setState(() {
+                        isLoading = false;
+                      });
                     },
-                  ),
+                    icon: Icon(
+                      Icons.lightbulb,
+                      color: isLoading ? Colors.red : Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: Image.asset(
+                kImageList[lives],
+              ),
+            ),
+            Center(
+              child: Text(
+                '$hangmanString',
+                style: TextStyle(
+                  fontSize: 50,
+                  fontFamily: 'PatrickHand',
+                  color: Colors.white,
+                  letterSpacing: 10,
                 ),
               ),
-            ],
-          ),
+            ),
+            Flexible(
+              child: Container(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 1,
+                    crossAxisCount: 7,
+                    mainAxisSpacing: 1,
+                  ),
+                  itemCount: keyboard.length,
+                  padding: const EdgeInsets.all(5),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.all(5),
+                      child: CustomTextButton(
+                          isLoading: isLoading,
+                          color: keyboard[index] ? Colors.grey : Colors.blue,
+                          label: kKeyboard[index],
+                          onPressed: () async {
+                            getIndexForLoadingInKeyboard(index);
+                          }),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
