@@ -29,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return ModalProgressHUD(
       inAsyncCall: spinning,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kBackgroundColor,
         body: SingleChildScrollView(
           child: Column(

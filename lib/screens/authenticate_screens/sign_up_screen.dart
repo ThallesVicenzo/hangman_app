@@ -35,6 +35,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return ModalProgressHUD(
       inAsyncCall: spinning,
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kBackgroundColor,
         body: SingleChildScrollView(
           child: Column(
