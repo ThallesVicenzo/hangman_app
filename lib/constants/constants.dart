@@ -11,7 +11,7 @@ const kImageList = <String>[
 ];
 
 const kHangmanGallow = 'assets/images/gallow.png';
-const kLogout = 'assets/images/logout.png';
+const kLogout = 'assets/images/out.png';
 
 const kKeyboard = <dynamic> [
   'A',
