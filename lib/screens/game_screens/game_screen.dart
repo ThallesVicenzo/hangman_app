@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
+import 'package:hangman_app/routes/named_routes.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
 import '../../services/hangman_api/hangman-model.dart';
 import '../../services/shared_preferences/storage_service.dart';
-
 
 class GameScreen extends StatefulWidget {
   GameScreen({@required this.hangmanDataFromApi, this.showPoints});
@@ -15,7 +14,6 @@ class GameScreen extends StatefulWidget {
   final hangmanDataFromApi;
   final int? showPoints;
 
-  @override
   State<GameScreen> createState() => _GameScreenState();
 }
 
@@ -230,10 +228,8 @@ class _GameScreenState extends State<GameScreen> {
                         });
                         isLoading ? await restartGame() : null;
                         isLoading
-                            ? Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                                return GameHomeScreen(restartData);
-                              }))
+                            ? Navigator.pushReplacementNamed(
+                                context, NamedRoutes.gameHome)
                             : null;
                         setState(() {
                           isLoading = false;
@@ -364,10 +360,8 @@ class _GameScreenState extends State<GameScreen> {
                           });
                           isLoading ? await restartGame() : null;
                           isLoading
-                              ? Navigator.pushReplacement(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return GameHomeScreen(restartData);
-                                }))
+                              ? Navigator.pushReplacementNamed(
+                                  context, NamedRoutes.gameHome)
                               : null;
                           setState(() {
                             isLoading = false;
@@ -498,78 +492,84 @@ class _GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: kBackgroundColor,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextWidget(title: 'life = $lives', fontSize: 25),
-                  TextWidget(title: '$showPoints', fontSize: 25),
-                  IconButton(
-                    onPressed: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      isLoading ? await updateUiWithHint() : null;
-                      setState(() {
-                        isLoading = false;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.lightbulb,
-                      color: getLoadingOrDisabledIconColor(),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: Image.asset(
-                kImageList[lives],
-              ),
-            ),
-            Center(
-              child: Text(
-                '$hangmanString',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontFamily: 'PatrickHand',
-                  color: Colors.white,
-                  letterSpacing: 3,
+      child: WillPopScope(
+        onWillPop: () async {
+          Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
+          return true;
+        },
+        child: Scaffold(
+          backgroundColor: kBackgroundColor,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextWidget(title: 'life = $lives', fontSize: 25),
+                    TextWidget(title: '$showPoints', fontSize: 25),
+                    IconButton(
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        isLoading ? await updateUiWithHint() : null;
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.lightbulb,
+                        color: getLoadingOrDisabledIconColor(),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ),
-            Flexible(
-              child: Container(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 1,
-                    crossAxisCount: 7,
-                    mainAxisSpacing: 1,
+              Expanded(
+                child: Image.asset(
+                  kImageList[lives],
+                ),
+              ),
+              Center(
+                child: Text(
+                  '$hangmanString',
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontFamily: 'PatrickHand',
+                    color: Colors.white,
+                    letterSpacing: 3,
                   ),
-                  itemCount: keyboard.length,
-                  padding: const EdgeInsets.all(5),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: EdgeInsets.all(5),
-                      child: CustomTextButton(
-                          isLoading: isLoading,
-                          color: keyboard[index] ? Colors.grey : Colors.blue,
-                          label: kKeyboard[index],
-                          onPressed: () async {
-                            getIndexForLoadingInKeyboard(index);
-                          }),
-                    );
-                  },
                 ),
               ),
-            ),
-          ],
+              Flexible(
+                child: Container(
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 1,
+                      crossAxisCount: 7,
+                      mainAxisSpacing: 1,
+                    ),
+                    itemCount: keyboard.length,
+                    padding: const EdgeInsets.all(5),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        margin: EdgeInsets.all(5),
+                        child: CustomTextButton(
+                            isLoading: isLoading,
+                            color: keyboard[index] ? Colors.grey : Colors.blue,
+                            label: kKeyboard[index],
+                            onPressed: () async {
+                              getIndexForLoadingInKeyboard(index);
+                            }),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

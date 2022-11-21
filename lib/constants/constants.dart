@@ -13,7 +13,7 @@ const kImageList = <String>[
 const kHangmanGallow = 'assets/images/gallow.png';
 const kLogout = 'assets/images/out.png';
 
-const kKeyboard = <dynamic> [
+const kKeyboard = <dynamic>[
   'A',
   'B',
   'C',
@@ -45,15 +45,14 @@ const kKeyboard = <dynamic> [
 const kBackgroundColor = Color(0xff421b9c);
 
 const kTextButtonStyle = TextStyle(
-fontFamily: 'PatrickHand',
-color: Colors.white,
+  fontFamily: 'PatrickHand',
+  color: Colors.white,
   fontSize: 25,
 );
 
 const kTextFieldDecoration = InputDecoration(
   hintStyle: kTextButtonStyle,
-  contentPadding:
-  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),

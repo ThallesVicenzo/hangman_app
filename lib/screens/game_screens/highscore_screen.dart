@@ -61,8 +61,8 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                            return GameHomeScreen(restartData);
-                          }));
+                        return GameHomeScreen();
+                      }));
                     },
                   ),
                   SizedBox(width: 35),

@@ -49,8 +49,8 @@ class CustomTextButton extends StatelessWidget {
                     fit: BoxFit.scaleDown,
                     child: Text(
                       label,
-                      style:
-                          kTextButtonStyle.copyWith(fontWeight: FontWeight.bold),
+                      style: kTextButtonStyle.copyWith(
+                          fontWeight: FontWeight.bold),
                     )),
               ),
             ],

@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class HangmanApiService {
   HangmanApiService(this.url);
 
@@ -34,6 +33,7 @@ class HangmanApiService {
       print(e);
     }
   }
+
   Future hangmanHint(String url) async {
     http.Response response = await http.get(Uri.parse(url));
     try {
@@ -47,6 +47,7 @@ class HangmanApiService {
       print(e);
     }
   }
+
   Future hangmanSolution(String url) async {
     http.Response response = await http.get(Uri.parse(url));
     try {

@@ -4,28 +4,37 @@ import 'package:hangman_app/screens/authenticate_screens/auth_home_screen.dart';
 import 'package:hangman_app/screens/game_screens/game_screen.dart';
 import '../../constants/constants.dart';
 import '../../routes/named_routes.dart';
+import '../../services/hangman_api/hangman-model.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/text_widget.dart';
 
 class GameHomeScreen extends StatefulWidget {
-  GameHomeScreen(this.hangmanData);
-
-  final hangmanData;
-
   @override
   State<GameHomeScreen> createState() => _GameHomeScreenState();
 }
 
 class _GameHomeScreenState extends State<GameHomeScreen> {
+  @override
+  initState() {
+    super.initState();
+    hangmanApiRequest();
+  }
+
+  var hangmanString;
 
   final _auth = FirebaseAuth.instance;
+  HangmanModel hangmanModel = HangmanModel();
+
+  Future<dynamic> hangmanApiRequest() async {
+    hangmanString = await hangmanModel.createGame();
+    return hangmanString;
+  }
 
   signOut() async {
     await _auth.signOut();
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) {
-          return AuthHomeScreen(widget.hangmanData);
-        }));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return AuthHomeScreen();
+    }));
   }
 
   @override
@@ -40,7 +49,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -76,7 +85,6 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image(
-                      //TODO: imagem borrada, image picker
                       image: AssetImage(kLogout),
                       color: Colors.white,
                     ),
@@ -100,8 +108,8 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                 label: 'Start',
                 fontSize: 20,
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                    return GameScreen(hangmanDataFromApi: widget.hangmanData);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return GameScreen(hangmanDataFromApi: hangmanString);
                   }));
                 }),
             Column(
@@ -113,7 +121,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                   label: 'High Scores',
                   fontSize: 20,
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
+                    Navigator.pushNamed(
                       context,
                       NamedRoutes.highscores,
                     );

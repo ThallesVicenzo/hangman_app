@@ -2,16 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import '../../routes/named_routes.dart';
 import '../../widgets/text_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen(this.hangmanData);
-
-  final hangmanData;
-
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -28,7 +24,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final _text = TextEditingController();
     bool _validate = false;
 
@@ -58,9 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Type your nickname here: ',
-                  errorText: _validate
-                      ? null
-                      : 'Value Can\'t Be Empty',
+                  errorText: _validate ? null : 'Value Can\'t Be Empty',
                 ),
               ),
               TextField(
@@ -96,10 +89,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   try {
                     await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return GameHomeScreen(widget.hangmanData);
-                    }));
+                    Navigator.pushReplacementNamed(
+                        context, NamedRoutes.gameHome);
                   } on FirebaseAuthException catch (e) {
                     setState(() {
                       spinning = false;

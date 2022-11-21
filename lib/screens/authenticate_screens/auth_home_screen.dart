@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hangman_app/routes/named_routes.dart';
 import 'package:hangman_app/screens/authenticate_screens/login_screen.dart';
 import 'package:hangman_app/screens/authenticate_screens/sign_up_screen.dart';
 import '../../constants/constants.dart';
@@ -6,10 +7,6 @@ import '../../widgets/custom_button.dart';
 import '../../widgets/text_widget.dart';
 
 class AuthHomeScreen extends StatefulWidget {
-  AuthHomeScreen(this.hangmanData);
-
-  final hangmanData;
-
   @override
   State<AuthHomeScreen> createState() => _AuthHomeScreenState();
 }
@@ -35,9 +32,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                 label: 'Login',
                 fontSize: 20,
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                    return LoginScreen(widget.hangmanData);
-                  }));
+                  Navigator.pushNamed(context, NamedRoutes.login);
                 }),
             Column(
               children: [
@@ -48,10 +43,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                   label: 'SignUp',
                   fontSize: 20,
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) {
-                      return SignUpScreen(widget.hangmanData);
-                    }));
+                    Navigator.pushNamed(context, NamedRoutes.signUp);
                   },
                 ),
               ],

@@ -2,15 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../constants/constants.dart';
+import '../../routes/named_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/text_widget.dart';
 import '../game_screens/game_home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen(this.hangmanData);
-
-  final hangmanData;
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -77,10 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       await _auth.signInWithEmailAndPassword(
                           email: email, password: password);
 
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) {
-                        return GameHomeScreen(widget.hangmanData);
-                      }));
+                      Navigator.pushReplacementNamed(
+                          context, NamedRoutes.gameHome);
                     } on FirebaseAuthException catch (e) {
                       setState(() {
                         spinning = false;
