@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
-import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
-import '../../services/storage_service.dart';
+import '../../services/hangman_api/hangman-model.dart';
+import '../../services/shared_preferences/storage_service.dart';
+
 
 class GameScreen extends StatefulWidget {
   GameScreen({@required this.hangmanDataFromApi, this.showPoints});

@@ -1,4 +1,4 @@
-import 'package:hangman_app/services/network.dart';
+import 'network.dart';
 
 const link = 'https://hangman-api.herokuapp.com/hangman';
 

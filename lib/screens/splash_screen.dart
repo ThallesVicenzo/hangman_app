@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/screens/authenticate_screens/auth_home_screen.dart';
 import 'package:hangman_app/screens/game_screens/game_home_screen.dart';
-import '../services/hangman-model.dart';
+
+import '../services/hangman_api/hangman-model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

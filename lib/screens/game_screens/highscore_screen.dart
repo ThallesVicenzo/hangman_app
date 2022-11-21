@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/services/hangman-model.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../services/highscore_tile.dart';
+import '../../services/hangman_api/hangman-model.dart';
+import '../../services/tile/highscore_tile.dart';
 import '../../widgets/highscore_list_content.dart';
 import 'game_home_screen.dart';
 

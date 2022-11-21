@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../widgets/highscore_list_content.dart';
+import '../../widgets/highscore_list_content.dart';
 
 class HighscoreTile extends StatelessWidget {
   HighscoreTile({required this.documentID});
