@@ -73,9 +73,13 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                           );
                         });
                   },
-                  child: Image(
-                    image: AssetImage(kLogout),
-                    color: Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image(
+                      //TODO: imagem borrada, image picker
+                      image: AssetImage(kLogout),
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 TextWidget(
@@ -96,7 +100,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                 label: 'Start',
                 fontSize: 20,
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                     return GameScreen(hangmanDataFromApi: widget.hangmanData);
                   }));
                 }),
@@ -109,7 +113,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                   label: 'High Scores',
                   fontSize: 20,
                   onPressed: () {
-                    Navigator.pushNamed(
+                    Navigator.pushReplacementNamed(
                       context,
                       NamedRoutes.highscores,
                     );

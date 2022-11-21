@@ -157,10 +157,13 @@ class _GameScreenState extends State<GameScreen> {
                           isLoading = true;
                         });
                         isLoading ? await restartGame() : null;
-                        isLoading ? Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                        return GameScreen(hangmanDataFromApi: restartData,);
-                        }))
+                        isLoading
+                            ? Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) {
+                                return GameScreen(
+                                  hangmanDataFromApi: restartData,
+                                );
+                              }))
                             : null;
                         setState(() {
                           isLoading = false;
@@ -226,10 +229,10 @@ class _GameScreenState extends State<GameScreen> {
                         });
                         isLoading ? await restartGame() : null;
                         isLoading
-                            ? Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                              return GameHomeScreen(restartData);
-                            }))
+                            ? Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) {
+                                return GameHomeScreen(restartData);
+                              }))
                             : null;
                         setState(() {
                           isLoading = false;
@@ -286,13 +289,13 @@ class _GameScreenState extends State<GameScreen> {
                           });
                           isLoading ? await restartGame() : null;
                           isLoading
-                              ? Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                                return GameScreen(
-                                  hangmanDataFromApi: restartData,
-                                  showPoints: showPoints,
-                                );
-                              }))
+                              ? Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return GameScreen(
+                                    hangmanDataFromApi: restartData,
+                                    showPoints: showPoints,
+                                  );
+                                }))
                               : null;
                           setState(() {
                             isLoading = false;
@@ -360,10 +363,10 @@ class _GameScreenState extends State<GameScreen> {
                           });
                           isLoading ? await restartGame() : null;
                           isLoading
-                              ? Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                                return GameHomeScreen(restartData);
-                              }))
+                              ? Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return GameHomeScreen(restartData);
+                                }))
                               : null;
                           setState(() {
                             isLoading = false;

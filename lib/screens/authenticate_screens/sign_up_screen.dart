@@ -96,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   try {
                     await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
-                    Navigator.push(context,
+                    Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       return GameHomeScreen(widget.hangmanData);
                     }));

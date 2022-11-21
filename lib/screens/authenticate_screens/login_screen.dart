@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       await _auth.signInWithEmailAndPassword(
                           email: email, password: password);
 
-                      Navigator.push(context,
+                      Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
                         return GameHomeScreen(widget.hangmanData);
                       }));

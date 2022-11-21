@@ -35,7 +35,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                 label: 'Login',
                 fontSize: 20,
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
                     return LoginScreen(widget.hangmanData);
                   }));
                 }),
@@ -48,7 +48,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                   label: 'SignUp',
                   fontSize: 20,
                   onPressed: () {
-                    Navigator.push(context,
+                    Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       return SignUpScreen(widget.hangmanData);
                     }));
