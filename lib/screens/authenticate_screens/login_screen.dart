@@ -12,8 +12,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late String email;
-  late String password;
+   String email = '';
+   String password = '';
 
   FirebaseAuthException? error;
   bool spinning = false;

@@ -13,9 +13,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  late String nickname;
-  late String email;
-  late String password;
+  String nickname = '';
+  String email = '';
+  String password = '';
 
   bool spinning = false;
 
