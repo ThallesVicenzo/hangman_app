@@ -20,16 +20,13 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   late String token;
   late String hangmanString;
-
   late String guessLetter;
+  late bool guessData;
+
+  late String hint;
   var newHangmanData;
-  var guessData;
-
-  var hint;
-
   var hangmanSolution;
-  var solution;
-
+  late String solution;
   var restartData;
 
   int totalHints = 3;
@@ -494,7 +491,7 @@ class _GameScreenState extends State<GameScreen> {
       hintUI();
       guessLetter = hint;
       await getLetter(token, hint);
-      final index = kKeyboard.indexOf(hint as String);
+      final index = kKeyboard.indexOf(hint.toUpperCase());
       setState(() {
         updateUI();
         updateToNewGame();
