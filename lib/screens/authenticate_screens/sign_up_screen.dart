@@ -21,6 +21,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final _auth = FirebaseAuth.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final _text = TextEditingController();
+
+
+  String? get _errorText {
+    final text = _text.value.text;
+    if (text.isEmpty) {
+      return 'Can\'t be empty';
+    }
+    if (text.length > 6) {
+      return 'Too big';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 decoration: kTextFieldDecoration.copyWith(
                   hintText: 'Type your nickname here: ',
-                  errorText: _validate ? null : 'Value Can\'t Be Empty',
+                  errorText: _errorText,
                 ),
               ),
               TextField(
@@ -87,10 +100,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     _validate = true;
                   });
                   try {
-                    await _auth.createUserWithEmailAndPassword(
-                        email: email, password: password);
-                    Navigator.pushReplacementNamed(
-                        context, NamedRoutes.gameHome);
+                    if(_errorText == null) {
+                      await _auth.createUserWithEmailAndPassword(
+                          email: email, password: password);
+                      Navigator.pushReplacementNamed(
+                          context, NamedRoutes.gameHome);
+                    } else{
+                      return null;
+                    }
                   } on FirebaseAuthException catch (e) {
                     setState(() {
                       spinning = false;
