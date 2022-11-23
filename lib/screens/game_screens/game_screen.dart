@@ -261,7 +261,6 @@ class _GameScreenState extends State<GameScreen> {
   Future updateToNewGame() async {
     if (hangmanString == solution) {
       showPoints++;
-
       showDialog(
           barrierDismissible: false,
           context: context,
@@ -508,7 +507,6 @@ class _GameScreenState extends State<GameScreen> {
                     onPressed: () {
                       setState(() {
                         totalHints = totalHints - 1;
-                        lives = lives - 1;
                       });
                       Navigator.pop(context);
                     },
@@ -564,6 +562,7 @@ class _GameScreenState extends State<GameScreen> {
                       onPressed: () async {
                         setState(() {
                           isLoading = true;
+                          lives = lives - 1;
                         });
                         isLoading ? await updateUiWithHint() : null;
                         setState(() {
