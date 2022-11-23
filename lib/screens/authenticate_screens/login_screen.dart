@@ -5,7 +5,6 @@ import '../../constants/constants.dart';
 import '../../routes/named_routes.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/text_widget.dart';
-import '../game_screens/game_home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
