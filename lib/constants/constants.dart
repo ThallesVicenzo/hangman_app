@@ -53,6 +53,10 @@ const kTextButtonStyle = TextStyle(
 const kTextFieldDecoration = InputDecoration(
   hintStyle: kTextButtonStyle,
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+    borderSide: BorderSide(color: Colors.red, width: 3.0),
+  ),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(32.0)),
   ),
