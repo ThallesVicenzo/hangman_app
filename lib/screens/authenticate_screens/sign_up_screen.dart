@@ -5,6 +5,7 @@ import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../routes/named_routes.dart';
+import '../../services/shared_preferences/storage_service.dart';
 import '../../widgets/text_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -101,6 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   });
                   try {
                     if(_errorText == null) {
+                      await StorageService.setNickname(nickname);
                       await _auth.createUserWithEmailAndPassword(
                           email: email, password: password);
                       Navigator.pushReplacementNamed(
