@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hangman_app/routes/named_routes.dart';
-import 'package:hangman_app/screens/authenticate_screens/login_screen.dart';
-import 'package:hangman_app/screens/authenticate_screens/sign_up_screen.dart';
 import '../../constants/constants.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/text_widget.dart';
