@@ -70,6 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   errorText: _errorText,
                 ),
               ),
+              SizedBox(height: 20,),
               TextField(
                 style: kTextButtonStyle,
                 onChanged: (value) {
