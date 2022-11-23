@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
@@ -21,115 +20,123 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool spinning = false;
 
   final _auth = FirebaseAuth.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  final _text = TextEditingController();
-
+  final _controller = TextEditingController();
 
   String? get _errorText {
-    final text = _text.value.text;
+    final text = _controller.value.text;
     if (text.isEmpty) {
-      return 'Can\'t be empty';
+      return 'Nickname can\'t be empty';
     }
     if (text.length > 6) {
-      return 'Too big';
+      return 'Nickname can\'t have more than 6 characters';
     }
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final _text = TextEditingController();
-    bool _validate = false;
-
     return ModalProgressHUD(
       inAsyncCall: spinning,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: kBackgroundColor,
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 30,
-              ),
-              TextWidget(
-                title: 'HANGMAN',
-                fontSize: 45,
-              ),
-              Image(
-                image: AssetImage(kHangmanGallow),
-              ),
-              TextField(
-                controller: _text,
-                style: kTextButtonStyle,
-                onChanged: (value) {
-                  nickname = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Type your nickname here: ',
-                  errorText: _errorText,
+          child: SafeArea(
+            child: Column(
+              children: [
+                TextWidget(
+                  title: 'HANGMAN',
+                  fontSize: 45,
                 ),
-              ),
-              SizedBox(height: 20,),
-              TextField(
-                style: kTextButtonStyle,
-                onChanged: (value) {
-                  email = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Type your email here: '),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextField(
-                style: kTextButtonStyle,
-                obscureText: true,
-                onChanged: (value) {
-                  password = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Type your password here: '),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomTextButton(
-                label: 'Register',
-                onPressed: () async {
-                  setState(() {
-                    spinning = true;
-                    _validate = true;
-                  });
-                  try {
-                    if(_errorText == null) {
-                      await StorageService.setNickname(nickname);
-                      await _auth.createUserWithEmailAndPassword(
-                          email: email, password: password);
-                      Navigator.pushReplacementNamed(
-                          context, NamedRoutes.gameHome);
-                    } else{
-                      return null;
-                    }
-                  } on FirebaseAuthException catch (e) {
+                Image(
+                  image: AssetImage(kHangmanGallow),
+                ),
+                TextField(
+                  controller: _controller,
+                  style: kTextButtonStyle,
+                  onChanged: (value) {
+                    nickname = value;
+                    (_) => setState(() {});
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Type your nickname here: ',
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  style: kTextButtonStyle,
+                  onChanged: (value) {
+                    email = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Type your email here: ',
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  style: kTextButtonStyle,
+                  obscureText: true,
+                  onChanged: (value) {
+                    password = value;
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Type your password here: ',
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextButton(
+                  label: 'Register',
+                  onPressed: () async {
                     setState(() {
-                      spinning = false;
+                      spinning = true;
                     });
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            backgroundColor: kBackgroundColor,
-                            title: TextWidget(
-                              title: e.message.toString(),
-                              fontSize: 25,
-                            ),
-                          );
-                        });
-                  }
-                },
-              )
-            ],
+                    try {
+                      if (_errorText == null) {
+                        await StorageService.setNickname(nickname);
+                        await _auth.createUserWithEmailAndPassword(
+                            email: email, password: password);
+                        Navigator.pushReplacementNamed(
+                            context, NamedRoutes.gameHome);
+                      } else {
+                        spinning = false;
+                        return showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: kBackgroundColor,
+                                title: TextWidget(
+                                  title: _errorText.toString(),
+                                  fontSize: 25,
+                                ),
+                              );
+                            });
+                      }
+                    } on FirebaseAuthException catch (e) {
+                      setState(() {
+                        spinning = false;
+                      });
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: kBackgroundColor,
+                              title: TextWidget(
+                                title: e.message.toString(),
+                                fontSize: 25,
+                              ),
+                            );
+                          });
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
