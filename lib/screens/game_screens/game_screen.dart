@@ -18,10 +18,10 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  var token;
-  var hangmanString;
+  late String token;
+  late String hangmanString;
 
-  var guessLetter;
+  late String guessLetter;
   var newHangmanData;
   var guessData;
 
@@ -40,6 +40,7 @@ class _GameScreenState extends State<GameScreen> {
   bool isPressed = false;
   bool isLoading = false;
   bool isVisible = true;
+  bool disable = true;
 
   final _text = TextEditingController();
 
@@ -459,6 +460,19 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+  getIndexForLoadingInKeyboard(index) async {
+    if (keyboard[index] == false) {
+      setState(() {
+        isLoading = true;
+      });
+      await updateHangmanString(index);
+      setState(() {
+        isLoading = false;
+      });
+    } else
+      return null;
+  }
+
   Future updateHangmanString(index) async {
     if (keyboard[index] == false) {
       guessLetter = kKeyboard[index];
@@ -474,82 +488,32 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  getIndexForLoadingInKeyboard(index) async {
-    if (keyboard[index] == false) {
-      setState(() {
-        isLoading = true;
-      });
-      await updateHangmanString(index);
-      setState(() {
-        isLoading = false;
-      });
-    } else
-      return null;
-  }
-
   Future updateUiWithHint() async {
     if (totalHints > 0 && lives > 1) {
       await getHint(token);
       hintUI();
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return StatefulBuilder(builder: (context, setState) {
-              return AlertDialog(
-                backgroundColor: kBackgroundColor,
-                title: TextWidget(
-                  title: 'The letter that you are looking for is: $hint',
-                  fontSize: 25,
-                ),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextWidget(
-                          title:
-                              'Warning: You have $changeTotalHints more hint(s).',
-                          fontSize: 25,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextWidget(
-                            title:
-                                'Warning: Each hint you take you will lose 1 life',
-                            fontSize: 25),
-                      )
-                    ],
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          side: BorderSide(width: 3, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        totalHints = totalHints - 1;
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: TextWidget(
-                      title: 'OK',
-                      fontSize: 30,
-                    ),
-                  ),
-                ],
-              );
-            });
-          });
+      guessLetter = hint;
+      await getLetter(token, hint);
+      final index = kKeyboard.indexOf(hint as String);
+      setState(() {
+        updateUI();
+        updateToNewGame();
+        updateToGameOver();
+        keyboard[index] = true;
+      });
     } else {
       return null;
     }
+  }
+
+  get disableHint {
+    if (lives == 1) {
+      return disable = true;
+    }
+    if (isLoading == true) {
+      return disable = true;
+    }
+    return disable = false;
   }
 
   Color getLoadingOrDisabledIconColor() {
@@ -586,20 +550,23 @@ class _GameScreenState extends State<GameScreen> {
                   children: [
                     TextWidget(title: 'life = $lives', fontSize: 25),
                     TextWidget(title: '$showPoints', fontSize: 25),
-                    IconButton(
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        isLoading ? await updateUiWithHint() : null;
-                        setState(() {
-                          lives = lives - 1;
-                          isLoading = false;
-                        });
-                      },
-                      icon: Icon(
-                        Icons.lightbulb,
-                        color: getLoadingOrDisabledIconColor(),
+                    AbsorbPointer(
+                      absorbing: disableHint,
+                      child: IconButton(
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          await updateUiWithHint();
+                          setState(() {
+                            lives = lives - 1;
+                            isLoading = false;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.lightbulb,
+                          color: getLoadingOrDisabledIconColor(),
+                        ),
                       ),
                     )
                   ],
