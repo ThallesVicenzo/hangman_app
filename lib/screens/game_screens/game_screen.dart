@@ -402,8 +402,8 @@ class _GameScreenState extends State<GameScreen> {
     if (text.isEmpty) {
       return 'Can\'t be empty';
     }
-    if (text.length > 6) {
-      return 'Too big';
+    if (text.length > 7) {
+      return 'Can\'t have more than 7 characters';
     }
     return null;
   }

@@ -27,8 +27,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (text.isEmpty) {
       return 'Nickname can\'t be empty';
     }
-    if (text.length > 6) {
-      return 'Nickname can\'t have more than 6 characters';
+    if (text.length > 7) {
+      return 'Nickname can\'t have more than 7 characters';
     }
     return null;
   }
