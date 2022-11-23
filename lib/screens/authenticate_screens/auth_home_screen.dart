@@ -27,6 +27,14 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                   ),
                   actions: [
                     TextButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(width: 3, color: Colors.white),
+                            ),
+                          ),
+                        ),
                         onPressed: () {
                           SystemNavigator.pop();
                         },
@@ -35,6 +43,14 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                           fontSize: 25,
                         )),
                     TextButton(
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              side: BorderSide(width: 3, color: Colors.white),
+                            ),
+                          ),
+                        ),
                         onPressed: () {
                           Navigator.pop(context);
                         },

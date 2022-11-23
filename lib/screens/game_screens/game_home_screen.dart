@@ -58,6 +58,15 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                           ),
                           actions: [
                             TextButton(
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      side: BorderSide(
+                                          width: 3, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
                                 onPressed: () {
                                   SystemNavigator.pop();
                                 },
@@ -66,6 +75,15 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                                   fontSize: 25,
                                 )),
                             TextButton(
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                      side: BorderSide(
+                                          width: 3, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -126,15 +144,14 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                               color: Colors.white,
                             ),
                           ),
-                          TextWidget(
-                            title: 'HANGMAN',
-                            fontSize: 50,
+                          Padding(
+                            padding: EdgeInsets.only(right: 50),
+                            child: TextWidget(
+                              title: 'HANGMAN',
+                              fontSize: 50,
+                            ),
                           ),
-                          Visibility(
-                            visible: false,
-                            child:
-                                TextWidget(title: 'placeHolder', fontSize: 1),
-                          ),
+                          Container(),
                         ],
                       ),
                       Image(
