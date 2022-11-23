@@ -195,21 +195,17 @@ class _GameScreenState extends State<GameScreen> {
                             setState(() {
                               isLoading = true;
                             });
-                            if (_errorText == null) {
-                              await addHighscore();
-                              await StorageService.setNickname(nickname!);
-                              setState(() {
-                                isPressed = true;
-                                isLoading = false;
-                                isVisible = false;
-                              });
-                            } else {
-                                isVisible = true;
-                                isLoading = false;
-                                isPressed = false;
-                            }
+                            await highscoreButtonWithoutTextField();
+                            await highscoreButtonWithTextField();
+                            setState(() {
+                              isLoading = false;
+                              isPressed = true;
+                              isVisible = false;
+                            });
                           } else {
-                            return null;
+                            isVisible = true;
+                            isLoading = false;
+                            isPressed = false;
                           }
                         },
                         child: TextWidget(
@@ -256,6 +252,29 @@ class _GameScreenState extends State<GameScreen> {
             });
           });
     }
+  }
+
+  highscoreButtonWithTextField() async {
+    if (nickname == null) {
+      if (_errorText == null) {
+        await addHighscore();
+        await StorageService.setNickname(nickname!);
+        return setState(() {
+          isPressed = true;
+          isVisible = false;
+        });
+      } else
+        return null;
+    } else
+      return null;
+  }
+
+  highscoreButtonWithoutTextField() async {
+    if (nickname != null) {
+      await addHighscore();
+      await StorageService.setNickname(nickname!);
+    } else
+      return null;
   }
 
   Future updateToNewGame() async {
@@ -333,21 +352,17 @@ class _GameScreenState extends State<GameScreen> {
                             setState(() {
                               isLoading = true;
                             });
-                            if (_errorText == null) {
-                              await addHighscore();
-                              await StorageService.setNickname(nickname!);
-                              setState(() {
-                                isPressed = true;
-                                isLoading = false;
-                                isVisible = false;
-                              });
-                            } else {
-                                isVisible = true;
-                                isLoading = false;
-                                isPressed = false;
-                            }
+                            await highscoreButtonWithoutTextField();
+                            await highscoreButtonWithTextField();
+                            setState(() {
+                              isLoading = false;
+                              isPressed = true;
+                              isVisible = false;
+                            });
                           } else {
-                            return null;
+                            isVisible = true;
+                            isLoading = false;
+                            isPressed = false;
                           }
                         },
                         child: TextWidget(
@@ -407,6 +422,19 @@ class _GameScreenState extends State<GameScreen> {
     return null;
   }
 
+  int get changeTotalHints {
+    if (lives == 3) {
+      return totalHints = 2;
+    }
+    if (lives == 2) {
+      return totalHints = 1;
+    }
+    if (lives == 1) {
+      return totalHints = 0;
+    }
+    return totalHints;
+  }
+
   checkIfNicknameIsNull() {
     if (nickname == null) {
       return Visibility(
@@ -418,7 +446,6 @@ class _GameScreenState extends State<GameScreen> {
             style: kTextButtonStyle,
             onChanged: (value) {
               nickname = value;
-              (_) => setState(() {});
             },
             decoration: kTextFieldDecoration.copyWith(
               hintText: 'Type your nickname here: ',
@@ -427,7 +454,7 @@ class _GameScreenState extends State<GameScreen> {
           ),
         ),
       );
-    } else{
+    } else {
       return SizedBox();
     }
   }
@@ -480,7 +507,8 @@ class _GameScreenState extends State<GameScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextWidget(
-                          title: 'Warning: You have $totalHints more hint(s).',
+                          title:
+                              'Warning: You have $changeTotalHints more hint(s).',
                           fontSize: 25,
                         ),
                       ),
@@ -562,10 +590,10 @@ class _GameScreenState extends State<GameScreen> {
                       onPressed: () async {
                         setState(() {
                           isLoading = true;
-                          lives = lives - 1;
                         });
                         isLoading ? await updateUiWithHint() : null;
                         setState(() {
+                          lives = lives - 1;
                           isLoading = false;
                         });
                       },
