@@ -39,6 +39,9 @@ class _GameScreenState extends State<GameScreen> {
 
   bool isPressed = false;
   bool isLoading = false;
+  bool isVisible = true;
+
+  final _text = TextEditingController();
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
@@ -112,7 +115,7 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-  void updateToGameOver() async {
+  Future updateToGameOver() async {
     if (guessData == false) {
       lives = lives - 1;
     }
@@ -135,6 +138,7 @@ class _GameScreenState extends State<GameScreen> {
                       title: 'The correct word was: $solution',
                       fontSize: 30,
                     ),
+                    checkIfNicknameIsNull(),
                   ],
                 )),
                 actions: [
@@ -191,14 +195,19 @@ class _GameScreenState extends State<GameScreen> {
                             setState(() {
                               isLoading = true;
                             });
-                            isLoading ? await addHighscore() : null;
-                            isLoading
-                                ? await StorageService.setNickname(nickname!)
-                                : null;
-                            setState(() {
-                              isLoading = false;
-                              isPressed = true;
-                            });
+                            if (_errorText == null) {
+                              await addHighscore();
+                              await StorageService.setNickname(nickname!);
+                              setState(() {
+                                isPressed = true;
+                                isLoading = false;
+                                isVisible = false;
+                              });
+                            } else {
+                                isVisible = true;
+                                isLoading = false;
+                                isPressed = false;
+                            }
                           } else {
                             return null;
                           }
@@ -252,133 +261,175 @@ class _GameScreenState extends State<GameScreen> {
   Future updateToNewGame() async {
     if (hangmanString == solution) {
       showPoints++;
-      setState(() {
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              return StatefulBuilder(builder: (BuildContext context, setState) {
-                return AlertDialog(
-                  backgroundColor: kBackgroundColor,
-                  title: TextWidget(
-                    title: 'Congratulations!',
-                    fontSize: 40,
+
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (BuildContext context, setState) {
+              return AlertDialog(
+                backgroundColor: kBackgroundColor,
+                title: TextWidget(
+                  title: 'Congratulations!',
+                  fontSize: 40,
+                ),
+                content: SingleChildScrollView(
+                  child: Column(children: [
+                    TextWidget(
+                        title: 'Your highscore is: $showPoints', fontSize: 25),
+                    checkIfNicknameIsNull(),
+                  ]),
+                ),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        isLoading ? await restartGame() : null;
+                        isLoading
+                            ? Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) {
+                                return GameScreen(
+                                  hangmanDataFromApi: restartData,
+                                );
+                              }))
+                            : null;
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      child: TextWidget(
+                        title: 'Next Word',
+                        fontSize: 25,
+                        isLoading: isLoading,
+                      ),
+                    ),
                   ),
-                  content: TextWidget(
-                      title: 'Your highscore is: $showPoints', fontSize: 25),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(
-                                  width: 3,
-                                  color: isLoading ? Colors.red : Colors.white),
-                            ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
                           ),
                         ),
                         onPressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          isLoading ? await restartGame() : null;
-                          isLoading
-                              ? Navigator.pushReplacement(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return GameScreen(
-                                    hangmanDataFromApi: restartData,
-                                    showPoints: showPoints,
-                                  );
-                                }))
-                              : null;
-                          setState(() {
-                            isLoading = false;
-                          });
-                        },
-                        child: TextWidget(
-                          title: 'Next Word',
-                          fontSize: 25,
-                          isLoading: isLoading,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                          style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(
-                                  width: 3,
-                                  color: isLoading ? Colors.red : Colors.white),
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (isPressed == false) {
+                          if (isPressed == false) {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            if (_errorText == null) {
+                              await addHighscore();
+                              await StorageService.setNickname(nickname!);
                               setState(() {
-                                isLoading = true;
-                              });
-                              isLoading ? await addHighscore() : null;
-
-                              isLoading
-                                  ? await StorageService.setNickname(nickname!)
-                                  : null;
-
-                              setState(() {
-                                isLoading = false;
                                 isPressed = true;
+                                isLoading = false;
+                                isVisible = false;
                               });
                             } else {
-                              return null;
+                                isVisible = true;
+                                isLoading = false;
+                                isPressed = false;
                             }
-                          },
-                          child: TextWidget(
-                            title: 'Submit Highscore',
-                            fontSize: 25,
-                            isLoading: isLoading,
-                          )),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              side: BorderSide(
-                                  width: 3,
-                                  color: isLoading ? Colors.red : Colors.white),
-                            ),
-                          ),
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          isLoading ? await restartGame() : null;
-                          isLoading
-                              ? Navigator.pushReplacementNamed(
-                                  context, NamedRoutes.gameHome)
-                              : null;
-                          setState(() {
-                            isLoading = false;
-                          });
+                          } else {
+                            return null;
+                          }
                         },
                         child: TextWidget(
-                          title: 'Return to title',
+                          title: 'Submit Highscore',
                           fontSize: 25,
                           isLoading: isLoading,
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
+                          ),
                         ),
                       ),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        isLoading ? await restartGame() : null;
+                        isLoading
+                            ? Navigator.pushReplacementNamed(
+                                context, NamedRoutes.gameHome)
+                            : null;
+                        setState(() {
+                          isLoading = false;
+                        });
+                      },
+                      child: TextWidget(
+                        title: 'Return to title',
+                        fontSize: 25,
+                        isLoading: isLoading,
+                      ),
                     ),
-                  ],
-                );
-              });
+                  ),
+                ],
+              );
             });
-      });
+          });
+    }
+  }
+
+  String? get _errorText {
+    final text = _text.value.text;
+    if (text.isEmpty) {
+      return 'Can\'t be empty';
+    }
+    if (text.length > 6) {
+      return 'Too big';
+    }
+    return null;
+  }
+
+  checkIfNicknameIsNull() {
+    if (nickname == null) {
+      return Visibility(
+        visible: isVisible,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            controller: _text,
+            style: kTextButtonStyle,
+            onChanged: (value) {
+              nickname = value;
+              (_) => setState(() {});
+            },
+            decoration: kTextFieldDecoration.copyWith(
+              hintText: 'Type your nickname here: ',
+              errorText: _errorText,
+            ),
+          ),
+        ),
+      );
+    } else{
+      return SizedBox();
     }
   }
 
