@@ -320,6 +320,7 @@ class _GameScreenState extends State<GameScreen> {
                                 MaterialPageRoute(builder: (context) {
                                 return GameScreen(
                                   hangmanDataFromApi: restartData,
+                                  showPoints: showPoints,
                                 );
                               }))
                             : null;
