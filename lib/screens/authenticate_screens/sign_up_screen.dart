@@ -4,7 +4,6 @@ import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../routes/named_routes.dart';
-import '../../services/shared_preferences/storage_service.dart';
 import '../../widgets/text_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -13,24 +12,34 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  String nickname = '';
   String email = '';
   String password = '';
 
   bool spinning = false;
 
   final _auth = FirebaseAuth.instance;
-  final _controller = TextEditingController();
 
-  String? get _errorText {
-    final text = _controller.value.text;
-    if (text.isEmpty) {
-      return 'Nickname can\'t be empty';
+  Future authUser() async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        spinning = false;
+      });
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: kBackgroundColor,
+              title: TextWidget(
+                title: e.message.toString(),
+                fontSize: 25,
+              ),
+            );
+          });
     }
-    if (text.length > 7) {
-      return 'Nickname can\'t have more than 7 characters';
-    }
-    return null;
   }
 
   @override
@@ -50,20 +59,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Image(
                   image: AssetImage(kHangmanGallow),
-                ),
-                TextField(
-                  controller: _controller,
-                  style: kTextButtonStyle,
-                  onChanged: (value) {
-                    nickname = value;
-                    (_) => setState(() {});
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Type your nickname here: ',
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
                 ),
                 TextField(
                   style: kTextButtonStyle,
@@ -88,51 +83,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 40,
                 ),
                 CustomTextButton(
                   label: 'Register',
-                  onPressed: () async {
+                  onPressed: () {
                     setState(() {
                       spinning = true;
                     });
-                    try {
-                      if (_errorText == null) {
-                        await StorageService.setNickname(nickname);
-                        await _auth.createUserWithEmailAndPassword(
-                            email: email, password: password);
-                        Navigator.pushReplacementNamed(
-                            context, NamedRoutes.gameHome);
-                      } else {
-                        spinning = false;
-                        return showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: kBackgroundColor,
-                                title: TextWidget(
-                                  title: _errorText.toString(),
-                                  fontSize: 25,
-                                ),
-                              );
-                            });
-                      }
-                    } on FirebaseAuthException catch (e) {
-                      setState(() {
-                        spinning = false;
-                      });
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              backgroundColor: kBackgroundColor,
-                              title: TextWidget(
-                                title: e.message.toString(),
-                                fontSize: 25,
-                              ),
-                            );
-                          });
-                    }
+                    authUser();
                   },
                 )
               ],
