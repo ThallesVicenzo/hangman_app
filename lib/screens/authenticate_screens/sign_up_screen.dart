@@ -88,10 +88,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
     else{
       try {
-        await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
         userId = _auth.currentUser?.uid;
         await users.doc(userId).set(setUserData(email, password, nickname));
+        await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
         Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
       } on FirebaseAuthException catch (e) {
         setState(() {
