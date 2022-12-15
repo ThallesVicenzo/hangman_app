@@ -1,9 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hangman_app/screens/authenticate_screens/auth_home_screen.dart';
 import 'package:hangman_app/screens/game_screens/game_screen.dart';
+import 'package:hangman_app/services/hangman_json/json-request.dart';
 import '../../constants/constants.dart';
 import '../../routes/named_routes.dart';
 import '../../widgets/custom_button.dart';
@@ -15,19 +17,14 @@ class GameHomeScreen extends StatefulWidget {
 }
 
 class _GameHomeScreenState extends State<GameHomeScreen> {
-  var hangmanString;
-  String nickname = '';
-  String? userId;
-
   final _auth = FirebaseAuth.instance;
-  final _text = TextEditingController();
+  HangmanJsonRequest jsonRequest = HangmanJsonRequest();
+  late List<dynamic> listData;
+  dynamic hangmanData;
 
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-  @override
   void initState() {
     super.initState();
-    userId = _auth.currentUser?.uid;
+    jsonData();
   }
 
   signOut() async {
@@ -37,94 +34,17 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
     }));
   }
 
-  String? get _errorText {
-    final text = _text.value.text;
-    if (text.isEmpty) {
-      return 'Can\'t be empty';
-    }
-    if (text.length > 7) {
-      return 'Can\'t have more than 7 characters';
-    }
-    return null;
+  Future jsonData() async {
+    listData = await jsonRequest.loadJson();
+    return listData;
   }
 
-  typeNickname() {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(builder: (BuildContext context, setState) {
-          return AlertDialog(
-            backgroundColor: kBackgroundColor,
-            title: TextWidget(
-              title: 'Please type your nickname',
-              fontSize: 30,
-            ),
-            content: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _text,
-                style: kTextButtonStyle,
-                onChanged: (value) {
-                  nickname = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Type your nickname here: ',
-                  errorText: _errorText,
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(width: 3, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  onPressed: () async {
-                    if (_errorText == null) {
-                      await addNickname();
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return GameScreen(
-                          hangmanDataFromApi: hangmanString,
-                        );
-                      }));
-                    }
-                  },
-                  child: TextWidget(
-                    title: 'Confirm',
-                    fontSize: 20,
-                  )),
-              TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: BorderSide(width: 3, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: TextWidget(
-                    title: 'Cancel',
-                    fontSize: 20,
-                  )),
-            ],
-          );
-        });
-      },
-    );
+  dynamic listDataRandomizer() {
+    final _random = new Random();
+    hangmanData = listData[_random.nextInt(listData.length)];
+    return hangmanData;
   }
 
-  Future<void> addNickname() {
-    final setNickname = <String, String>{'nickname': nickname};
-    return users.doc(userId).set(setNickname);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,8 +115,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                             return AlertDialog(
                               backgroundColor: kBackgroundColor,
                               title: TextWidget(
-                                title:
-                                    'Are you sure that you want to logout?',
+                                title: 'Are you sure that you want to logout?',
                                 fontSize: 25,
                               ),
                               actions: [
@@ -244,8 +163,12 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                   width: 130,
                   label: 'Start',
                   fontSize: 20,
-                  onPressed: () {
-                    typeNickname();
+                  onPressed: () async {
+                    await listDataRandomizer();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                          return GameScreen(hangmanData: hangmanData,);
+                        }));
                   }),
               Column(
                 children: [
