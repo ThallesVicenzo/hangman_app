@@ -13,7 +13,7 @@ class Pages {
   static Map<String, WidgetBuilder> all(BuildContext context) {
     return {
       NamedRoutes.gameHome: (context) => GameHomeScreen(),
-      NamedRoutes.game: (context) => GameScreen(hangmanDataFromApi: null),
+      NamedRoutes.game: (context) => GameScreen(hangmanData: null,),
       NamedRoutes.highscores: (context) => HighScoreScreen(),
       NamedRoutes.splash: (context) => const SplashScreen(),
       NamedRoutes.authHome: (context) => AuthHomeScreen(),
