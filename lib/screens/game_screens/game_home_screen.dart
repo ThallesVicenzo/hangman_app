@@ -22,11 +22,6 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
   late List<dynamic> listData;
   dynamic hangmanData;
 
-  void initState() {
-    super.initState();
-    jsonData();
-  }
-
   signOut() async {
     await _auth.signOut();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
@@ -39,7 +34,8 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
     return listData;
   }
 
-  dynamic listDataRandomizer() {
+  dynamic listDataRandomizer() async {
+    await jsonData();
     final _random = new Random();
     hangmanData = listData[_random.nextInt(listData.length)];
     return hangmanData;
@@ -165,6 +161,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                   fontSize: 20,
                   onPressed: () async {
                     await listDataRandomizer();
+                    print(hangmanData);
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                           return GameScreen(hangmanData: hangmanData,);
