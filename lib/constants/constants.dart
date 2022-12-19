@@ -13,35 +13,6 @@ const kImageList = <String>[
 const kHangmanGallow = 'assets/images/gallow.png';
 const kLogout = 'assets/images/out.png';
 
-const kKeyboard = <dynamic>[
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-  'J',
-  'K',
-  'L',
-  'M',
-  'N',
-  'O',
-  'P',
-  'Q',
-  'R',
-  'S',
-  'T',
-  'U',
-  'V',
-  'W',
-  'X',
-  'Y',
-  'Z',
-];
-
 const kBackgroundColor = Color(0xff421b9c);
 
 const kTextButtonStyle = TextStyle(
