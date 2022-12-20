@@ -1,11 +1,11 @@
 import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hangman_app/screens/authenticate_screens/auth_home_screen.dart';
 import 'package:hangman_app/screens/game_screens/game_screen.dart';
 import 'package:hangman_app/services/hangman_json/json-request.dart';
+import 'package:hangman_app/services/tile/game_tile.dart';
 import '../../constants/constants.dart';
 import '../../routes/named_routes.dart';
 import '../../widgets/custom_button.dart';
@@ -29,7 +29,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
     }));
   }
 
-  Future jsonData() async {
+  Future<dynamic> jsonData() async {
     listData = await jsonRequest.loadJson();
     return listData;
   }
@@ -161,6 +161,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                   fontSize: 20,
                   onPressed: () async {
                     await listDataRandomizer();
+                    GameTile.selectedChar.clear();
                     print(hangmanData);
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
