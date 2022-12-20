@@ -5,6 +5,8 @@ import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/routes/named_routes.dart';
 import 'package:hangman_app/services/tile/game_tile.dart';
 import 'package:hangman_app/widgets/custom_button.dart';
+import 'package:hangman_app/widgets/hang_image.dart';
+import 'package:hangman_app/widgets/text_widget.dart';
 
 import '../../widgets/letter.dart';
 
@@ -296,37 +298,7 @@ class _GameScreenState extends State<GameScreen> {
         });
   }*/
 
-/*getIndexForLoadingInKeyboard(index) async {
-    if (keyboard[index] == false) {
-      setState(() {
-        isLoading = true;
-      });
-      await updateHangmanString(index);
-      setState(() {
-        isLoading = false;
-      });
-    } else
-      return null;
-  }
-
-  Future updateHangmanString(index) async {
-    if (keyboard[index] == false ) {
-      GameTile.selectedChar.contains(index) ? null : () {
-        setState(() {
-          GameTile.selectedChar.add(index);
-          updateToGameOver();
-          updateToNewGame();
-          if(!word.split('').contains(index.toUpperCase())){
-            GameTile.lives--;
-          }
-          keyboard[index] = true;
-        });
-      };
-    } else {
-      return null;
-    }
-  }
-
+  /*
   Future updateUiWithHint() async {
     if (totalHints > 0 && lives > 1) {
       await getHint(token);
@@ -379,47 +351,63 @@ class _GameScreenState extends State<GameScreen> {
         },
         child: Scaffold(
             backgroundColor: kBackgroundColor,
-            body: Column(children: [
-              Expanded(
-                child: Image.asset(
-                  kImageList[GameTile.lives],
-                ),
-              ),
-              Row(
+            body: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: word
-                    .split('')
-                    .map((e) => Letter(e.toUpperCase(),
-                        !GameTile.selectedChar.contains(e.toUpperCase())))
-                    .toList(),
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 250,
-                child: GridView.count(
-                  crossAxisCount: 7,
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8,
-                  padding: EdgeInsets.all(8.0),
-                  children: GameTile.kKeyboard.map((e) {
-                    return CustomTextButton(
-                        label: e,
-                        onPressed: GameTile.selectedChar.contains(e)
-                            ? null
-                            : () {
-                                setState(() {
-                                  GameTile.selectedChar.add(e);
-                                  if (word
-                                      .split('')
-                                      .contains(e.toUpperCase())) {
-                                    GameTile.lives++;
-                                  }
-                                });
-                              });
-                  }).toList(),
-                ),
-              )
-            ])),
+                children: [
+                  Stack(
+                    children: [
+                      HangImage(GameTile.tries >= 0, 'assets/images/6.png'),
+                      HangImage(GameTile.tries >= 1, 'assets/images/5.png'),
+                      HangImage(GameTile.tries >= 2, 'assets/images/4.png'),
+                      HangImage(GameTile.tries >= 3, 'assets/images/3.png'),
+                      HangImage(GameTile.tries >= 4, 'assets/images/2.png'),
+                      HangImage(GameTile.tries >= 5, 'assets/images/1.png'),
+                      HangImage(GameTile.tries >= 6, 'assets/images/0.png'),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: word
+                        .split('')
+                        .map((e) => Letter(e.toUpperCase(),
+                            !GameTile.selectedChar.contains(e.toUpperCase())))
+                        .toList(),
+                  ),
+                  SizedBox(
+                    height: 250,
+                    child: GridView.count(
+                      crossAxisCount: 7,
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8,
+                      padding: EdgeInsets.all(8.0),
+                      children: GameTile.kKeyboard.map((e) {
+                        return RawMaterialButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4.0)),
+                            fillColor: GameTile.selectedChar.contains(e)
+                                ? Colors.grey
+                                : Colors.blue,
+                            child: TextWidget(
+                              title: e,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            onPressed: GameTile.selectedChar.contains(e)
+                                ? null
+                                : () {
+                                    setState(() {
+                                      GameTile.selectedChar.add(e);
+                                      if (!word
+                                          .split('')
+                                          .contains(e.toUpperCase())) {
+                                        GameTile.tries++;
+                                      }
+                                    });
+                                  });
+                      }).toList(),
+                    ),
+                  )
+                ])),
       ),
     );
   }
