@@ -2,13 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
-import 'package:hangman_app/routes/named_routes.dart';
 import 'package:hangman_app/services/tile/game_tile.dart';
-import 'package:hangman_app/widgets/custom_button.dart';
 import 'package:hangman_app/widgets/hang_image.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
 import '../../widgets/letter.dart';
+import '../../widgets/show_dialog_method.dart';
 
 class GameScreen extends StatefulWidget {
   GameScreen({@required this.hangmanData, this.showPoints});
@@ -24,17 +23,20 @@ class _GameScreenState extends State<GameScreen> {
   String word = '';
   String hint = '';
 
+  int tries = 0;
+  int points = 0;
+  int totalHints = 1;
   late int showPoints;
-  String documentId = '';
 
   bool isPressed = false;
-  bool isLoading = false;
+  bool isVisible = false;
   bool disable = true;
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   final _auth = FirebaseAuth.instance;
+  String documentId = '';
 
   @override
   initState() {
@@ -48,7 +50,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void hangmanModel() {
-    word = hangmanGame['word'];
+    word = hangmanGame['word'].toString().toUpperCase();
     hint = hangmanGame['hint'];
   }
 
@@ -298,19 +300,12 @@ class _GameScreenState extends State<GameScreen> {
         });
   }*/
 
-  /*
   Future updateUiWithHint() async {
-    if (totalHints > 0 && lives > 1) {
-      await getHint(token);
-      hintUI();
-      guessLetter = hint;
-      await getLetter(token, hint);
-      final index = kKeyboard.indexOf(hint.toUpperCase());
+    if (totalHints > 0 && tries < 5) {
       setState(() {
-        updateUI();
-        updateToNewGame();
-        updateToGameOver();
-        keyboard[index] = true;
+        isVisible = true;
+        tries++;
+        totalHints--;
       });
     } else {
       return null;
@@ -318,35 +313,32 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   get disableHint {
-    if (lives == 1) {
+    if (tries == 5) {
       return disable = true;
     }
-    if (isLoading == true) {
+    if (totalHints == 0) {
       return disable = true;
     }
     return disable = false;
   }
 
-  Color getLoadingOrDisabledIconColor() {
+  Color getNormalOrDisabledIconColor() {
     if (totalHints == 0) {
       return Colors.red;
     }
-    if (isLoading == true) {
-      return Colors.red;
-    }
-    if (lives <= 1) {
+    if (tries >= 5) {
       return Colors.red;
     } else {
       return Colors.white;
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: WillPopScope(
         onWillPop: () async {
-          Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
+          EnsureToReturnToHome(context);
           return true;
         },
         child: Scaffold(
@@ -354,24 +346,64 @@ class _GameScreenState extends State<GameScreen> {
             body: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Stack(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      HangImage(GameTile.tries >= 0, 'assets/images/6.png'),
-                      HangImage(GameTile.tries >= 1, 'assets/images/5.png'),
-                      HangImage(GameTile.tries >= 2, 'assets/images/4.png'),
-                      HangImage(GameTile.tries >= 3, 'assets/images/3.png'),
-                      HangImage(GameTile.tries >= 4, 'assets/images/2.png'),
-                      HangImage(GameTile.tries >= 5, 'assets/images/1.png'),
-                      HangImage(GameTile.tries >= 6, 'assets/images/0.png'),
+                      IconButton(
+                        onPressed: () {
+                          EnsureToReturnToHome(context);
+                        },
+                        icon: Icon(
+                          Icons.home,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                      TextWidget(
+                        title: '$showPoints',
+                        fontSize: 30,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          updateUiWithHint();
+                        },
+                        icon: Icon(
+                          size: 30,
+                          Icons.lightbulb,
+                          color: getNormalOrDisabledIconColor(),
+                        ),
+                      ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: word
-                        .split('')
-                        .map((e) => Letter(e.toUpperCase(),
-                            !GameTile.selectedChar.contains(e.toUpperCase())))
-                        .toList(),
+                  Visibility(
+                    visible: isVisible,
+                    child: TextWidget(title: hint, fontSize: 30),
+                  ),
+                  Stack(
+                    children: [
+                      HangImage(tries >= 0, 'assets/images/6.png'),
+                      HangImage(tries >= 1, 'assets/images/5.png'),
+                      HangImage(tries >= 2, 'assets/images/4.png'),
+                      HangImage(tries >= 3, 'assets/images/3.png'),
+                      HangImage(tries >= 4, 'assets/images/2.png'),
+                      HangImage(tries >= 5, 'assets/images/1.png'),
+                      HangImage(tries >= 6, 'assets/images/0.png'),
+                    ],
+                  ),
+                  Wrap(
+                    direction: Axis.vertical,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: word
+                            .split('')
+                            .map((e) => Letter(
+                                e.toUpperCase(),
+                                !GameTile.selectedChar
+                                    .contains(e.toUpperCase())))
+                            .toList(),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 250,
@@ -400,7 +432,7 @@ class _GameScreenState extends State<GameScreen> {
                                       if (!word
                                           .split('')
                                           .contains(e.toUpperCase())) {
-                                        GameTile.tries++;
+                                        tries++;
                                       }
                                     });
                                   });
