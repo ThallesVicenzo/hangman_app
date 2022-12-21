@@ -72,10 +72,6 @@
     "hint": "Masculino"
   },
   {
-    "word": "Washington",
-    "hint": "Masculino"
-  },
-  {
     "word": "Salvador",
     "hint": "Masculino"
   },
@@ -97,10 +93,6 @@
   },
   {
     "word": "Ricardo",
-    "hint": "Masculino"
-  },
-  {
-    "word": "Richarlison",
     "hint": "Masculino"
   },
   {
@@ -128,19 +120,7 @@
     "hint": "Masculino"
   },
   {
-    "word": "Esperidiano",
-    "hint": "Masculino"
-  },
-  {
     "word": "Robson",
-    "hint": "Masculino"
-  },
-  {
-    "word": "Jefferson",
-    "hint": "Masculino"
-  },
-  {
-    "word": "Adagalmir",
     "hint": "Masculino"
   },
   {
@@ -328,10 +308,6 @@
     "hint": "Feminino"
   },
   {
-    "word": "Gabrielly",
-    "hint": "Feminino"
-  },
-  {
     "word": "Tais",
     "hint": "Feminino"
   },
@@ -352,19 +328,7 @@
     "hint": "Feminino"
   },
   {
-    "word": "Cassandra",
-    "hint": "Feminino"
-  },
-  {
     "word": "Tatiane",
-    "hint": "Feminino"
-  },
-  {
-    "word": "Charlotte",
-    "hint": "Feminino"
-  },
-  {
-    "word": "Dominique",
     "hint": "Feminino"
   },
   {
@@ -417,10 +381,6 @@
   },
   {
     "word": "Isadora",
-    "hint": "Feminino"
-  },
-  {
-    "word": "Tatiane",
     "hint": "Feminino"
   },
   {
@@ -480,10 +440,6 @@
     "hint": "Feminino"
   },
   {
-    "word": "Valentina",
-    "hint": "Feminino"
-  },
-  {
     "word": "Sofia",
     "hint": "Feminino"
   },
@@ -492,7 +448,7 @@
     "hint": "Feminino"
   },
   {
-    "word": "Tatiane",
-    "hint": "Feminino"
+    "word": "laercio",
+    "hint": "Masculino"
   }
 ]
