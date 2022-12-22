@@ -10,7 +10,7 @@ class HighscoreTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CollectionReference highscores =
-        FirebaseFirestore.instance.collection('users');
+        FirebaseFirestore.instance.collection('highscores');
     return FutureBuilder<DocumentSnapshot>(
         future: highscores.doc(documentID).get(),
         builder: (context, snapshot) {
