@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,8 @@ import 'package:hangman_app/services/tile/game_tile.dart';
 import 'package:hangman_app/widgets/hang_image.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
+import '../../routes/named_routes.dart';
+import '../../services/hangman_json/json-request.dart';
 import '../../widgets/letter.dart';
 import '../../widgets/show_dialog_method.dart';
 
@@ -20,28 +24,32 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   dynamic hangmanGame;
+  late List<dynamic> listData;
+
   String word = '';
   String hint = '';
-
   int tries = 0;
   int points = 0;
   int totalHints = 1;
   late int showPoints;
 
-  bool isPressed = false;
+  bool isLoading = false;
   bool isVisible = false;
+  bool isPressed = false;
   bool disable = true;
 
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   final _auth = FirebaseAuth.instance;
+  HangmanJsonRequest jsonRequest = HangmanJsonRequest();
   String documentId = '';
 
   @override
   initState() {
     super.initState();
     hangmanGame = widget.hangmanData;
+    GameTile.selectedChar.clear();
     hangmanModel();
     keyboard = List.generate(26, (index) => false);
     showPoints = widget.showPoints == null ? 0 : widget.showPoints!;
@@ -54,31 +62,38 @@ class _GameScreenState extends State<GameScreen> {
     hint = hangmanGame['hint'];
   }
 
+  Future<dynamic> jsonData() async {
+    listData = await jsonRequest.loadJson();
+    return listData;
+  }
+
+  dynamic listDataRandomizer() async {
+    await jsonData();
+    final _random = new Random();
+    hangmanGame = listData[_random.nextInt(listData.length)];
+    print(hangmanGame);
+    return hangmanGame;
+  }
+
+  /*
   Future<void> addHighscore() {
     return users.add({
       'highscore': showPoints,
     });
-  }
+  }*/
 
-  /*Future<void> newGameButton() async {
-    setState(() {
-      isLoading = true;
-    });
-    isLoading ? await createGame() : null;
-    isLoading
-        ? Navigator.pushReplacement(context,
+  Future<Future<Object?>> newGameButton() async {
+    await listDataRandomizer();
+    return Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) {
-          return GameScreen(
-            hangmanDataFromApi: restartData,
-            showPoints: showPoints,
-          );
-        }))
-        : null;
-    setState(() {
-      isLoading = false;
-    });
+      return GameScreen(
+        hangmanData: hangmanGame,
+        showPoints: showPoints,
+      );
+    }));
   }
 
+  /*
   Future<void> highscoreButton() async {
     if (isPressed == false) {
       setState(() {
@@ -93,26 +108,14 @@ class _GameScreenState extends State<GameScreen> {
       isLoading = false;
       isPressed = false;
     }
-  }
+  }*/
 
-  Future<void> returnButton() async {
-    setState(() {
-      isLoading = true;
-    });
-    isLoading ? await createGame() : null;
-    isLoading
-        ? Navigator.pushReplacementNamed(context, NamedRoutes.gameHome)
-        : null;
-    setState(() {
-      isLoading = false;
-    });
+  Future returnButton() {
+    return Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
   }
 
   Future updateToGameOver() async {
-    if (guessData == false) {
-      GameTile.lives--;
-    }
-    if (GameTile.lives <= 0) {
+    if (tries == 5) {
       showDialog(
           barrierDismissible: false,
           context: context,
@@ -126,13 +129,13 @@ class _GameScreenState extends State<GameScreen> {
                 ),
                 content: SingleChildScrollView(
                     child: Column(
-                      children: [
-                        TextWidget(
-                          title: 'The correct word was: $solution',
-                          fontSize: 30,
-                        ),
-                      ],
-                    )),
+                  children: [
+                    TextWidget(
+                      title: 'The correct word was: $word',
+                      fontSize: 30,
+                    ),
+                  ],
+                )),
                 actions: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -141,9 +144,7 @@ class _GameScreenState extends State<GameScreen> {
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(
-                                width: 3,
-                                color: isLoading ? Colors.red : Colors.white),
+                            side: BorderSide(width: 3, color: Colors.white),
                           ),
                         ),
                       ),
@@ -153,7 +154,6 @@ class _GameScreenState extends State<GameScreen> {
                       child: TextWidget(
                         title: 'Restart',
                         fontSize: 25,
-                        isLoading: isLoading,
                       ),
                     ),
                   ),
@@ -163,18 +163,15 @@ class _GameScreenState extends State<GameScreen> {
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(
-                                width: 3,
-                                color: isLoading ? Colors.red : Colors.white),
+                            side: BorderSide(width: 3, color: Colors.white),
                           ),
                         ),
                         onPressed: () {
-                          highscoreButton();
+                          //highscoreButton();
                         },
                         child: TextWidget(
                           title: 'Submit Highscore',
                           fontSize: 25,
-                          isLoading: isLoading,
                         )),
                   ),
                   Padding(
@@ -184,9 +181,7 @@ class _GameScreenState extends State<GameScreen> {
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(
-                                width: 3,
-                                color: isLoading ? Colors.red : Colors.white),
+                            side: BorderSide(width: 3, color: Colors.white),
                           ),
                         ),
                       ),
@@ -196,7 +191,6 @@ class _GameScreenState extends State<GameScreen> {
                       child: TextWidget(
                         title: 'Return to title',
                         fontSize: 25,
-                        isLoading: isLoading,
                       ),
                     ),
                   ),
@@ -207,8 +201,9 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+/*
   Future updateToNewGame() async {
-    //if (hangmanString == solution) {
+    if (hangmanString == solution) {
     showPoints++;
     showDialog(
         barrierDismissible: false,
@@ -263,7 +258,7 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ),
                       onPressed: () async {
-                        highscoreButton();
+                        //highscoreButton();
                       },
                       child: TextWidget(
                         title: 'Submit Highscore',
@@ -429,6 +424,7 @@ class _GameScreenState extends State<GameScreen> {
                                 : () {
                                     setState(() {
                                       GameTile.selectedChar.add(e);
+                                      updateToGameOver();
                                       if (!word
                                           .split('')
                                           .contains(e.toUpperCase())) {
