@@ -41,7 +41,6 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
     return hangmanData;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -116,6 +115,15 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                               ),
                               actions: [
                                 TextButton(
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        side: BorderSide(
+                                            width: 3, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                                   onPressed: () {
                                     signOut();
                                   },
@@ -125,6 +133,15 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                                   ),
                                 ),
                                 TextButton(
+                                  style: ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                        side: BorderSide(
+                                            width: 3, color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -165,8 +182,10 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                     print(hangmanData);
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
-                          return GameScreen(hangmanData: hangmanData,);
-                        }));
+                      return GameScreen(
+                        hangmanData: hangmanData,
+                      );
+                    }));
                   }),
               Column(
                 children: [
