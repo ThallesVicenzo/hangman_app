@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/services/tile/game_tile.dart';
 import 'package:hangman_app/widgets/hang_image.dart';
+import 'package:hangman_app/widgets/load_button.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
 import '../../routes/named_routes.dart';
@@ -28,9 +29,11 @@ class _GameScreenState extends State<GameScreen> {
 
   String word = '';
   String hint = '';
+  String nickname = '';
+
   int tries = 0;
-  int points = 0;
   int totalHints = 1;
+
   late int showPoints;
 
   bool isLoading = false;
@@ -41,20 +44,23 @@ class _GameScreenState extends State<GameScreen> {
   late List<bool> keyboard; //essa Lista guarda os booleanos
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference highscores =
+      FirebaseFirestore.instance.collection('highscores');
   final _auth = FirebaseAuth.instance;
   HangmanJsonRequest jsonRequest = HangmanJsonRequest();
   String documentId = '';
+  late final docData;
 
   @override
   initState() {
     super.initState();
     hangmanGame = widget.hangmanData;
+    documentId = _auth.currentUser!.uid;
     GameTile.selectedChar.clear();
     hangmanModel();
     keyboard = List.generate(26, (index) => false);
     showPoints = widget.showPoints == null ? 0 : widget.showPoints!;
-
-    documentId = _auth.currentUser!.uid;
+    getNickname();
   }
 
   void hangmanModel() {
@@ -75,43 +81,51 @@ class _GameScreenState extends State<GameScreen> {
     return hangmanGame;
   }
 
-  /*
-  Future<void> addHighscore() {
-    return users.add({
-      'highscore': showPoints,
+  Future<dynamic> getNickname() async {
+    await users.doc(documentId).get().then((value) {
+      nickname = value.get('nickname');
     });
-  }*/
-
-  Future<Future<Object?>> newGameButton() async {
-    await listDataRandomizer();
-    return Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) {
-      return GameScreen(
-        hangmanData: hangmanGame,
-        showPoints: showPoints,
-      );
-    }));
+    return nickname;
   }
 
-  /*
+  Future<void> addHighscore() {
+    final setData = <String, dynamic>{
+      'nickname': nickname,
+      'highscore': showPoints,
+    };
+    return highscores.doc(documentId).set(setData);
+  }
+
+  Future<Future<Object?>?> newGameButton() async {
+    if(isLoading == false) {
+      await listDataRandomizer();
+      return Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) {
+            return GameScreen(
+              hangmanData: hangmanGame,
+              showPoints: showPoints,
+            );
+          }));
+    } else{
+      return null;
+    }
+  }
+
   Future<void> highscoreButton() async {
     if (isPressed == false) {
-      setState(() {
-        isLoading = true;
-      });
       await addHighscore();
-      setState(() {
-        isLoading = false;
-        isPressed = true;
-      });
+    } else {
+      return null;
+    }
+  }
+
+  Future? returnButton() {
+    if(isLoading == false) {
+      return Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
     } else {
       isLoading = false;
-      isPressed = false;
     }
-  }*/
-
-  Future returnButton() {
-    return Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
+    return null;
   }
 
   Future updateToGameOver() async {
@@ -134,66 +148,35 @@ class _GameScreenState extends State<GameScreen> {
                       title: 'The correct word was: $word',
                       fontSize: 30,
                     ),
+                    Visibility(visible: isPressed, child: TextWidget(title: 'Highscore submitted!', fontSize: 20)),
                   ],
                 )),
                 actions: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(width: 3, color: Colors.white),
-                          ),
-                        ),
-                      ),
+                  LoadButton(
+                      isPressed: isLoading,
                       onPressed: () {
                         newGameButton();
                       },
-                      child: TextWidget(
-                        title: 'Restart',
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(width: 3, color: Colors.white),
-                          ),
-                        ),
-                        onPressed: () {
-                          //highscoreButton();
-                        },
-                        child: TextWidget(
-                          title: 'Submit Highscore',
-                          fontSize: 25,
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(width: 3, color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      onPressed: () async {
+                      title: 'New Game'),
+                  LoadButton(
+                    isPressed: isPressed,
+                      onPressed: () {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        highscoreButton();
+                        setState(() {
+                          isLoading = false;
+                          isPressed = true;
+                        });
+                      },
+                      title: 'Submit highscore'),
+                  LoadButton(
+                      isPressed: isLoading,
+                      onPressed: () {
                         returnButton();
                       },
-                      child: TextWidget(
-                        title: 'Return to title',
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
+                      title: 'Return to title'),
                 ],
               );
             });
