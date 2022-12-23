@@ -97,16 +97,16 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Future<Future<Object?>?> newGameButton() async {
-    if(isLoading == false) {
+    if (isLoading == false) {
       await listDataRandomizer();
       return Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) {
-            return GameScreen(
-              hangmanData: hangmanGame,
-              showPoints: showPoints,
-            );
-          }));
-    } else{
+        return GameScreen(
+          hangmanData: hangmanGame,
+          showPoints: showPoints,
+        );
+      }));
+    } else {
       return null;
     }
   }
@@ -120,7 +120,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Future? returnButton() {
-    if(isLoading == false) {
+    if (isLoading == false) {
       return Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
     } else {
       isLoading = false;
@@ -135,49 +135,57 @@ class _GameScreenState extends State<GameScreen> {
           context: context,
           builder: (BuildContext context) {
             return StatefulBuilder(builder: (BuildContext context, setState) {
-              return AlertDialog(
-                backgroundColor: kBackgroundColor,
-                title: TextWidget(
-                  title: 'You lose!',
-                  fontSize: 50,
-                ),
-                content: SingleChildScrollView(
-                    child: Column(
-                  children: [
-                    TextWidget(
-                      title: 'The correct word was: $word',
-                      fontSize: 30,
-                    ),
-                    Visibility(visible: isPressed, child: TextWidget(title: 'Highscore submitted!', fontSize: 20)),
+              return WillPopScope(
+                onWillPop: () async {
+                  return false;
+                },
+                child: AlertDialog(
+                  backgroundColor: kBackgroundColor,
+                  title: TextWidget(
+                    title: 'You lose!',
+                    fontSize: 50,
+                  ),
+                  content: SingleChildScrollView(
+                      child: Column(
+                    children: [
+                      TextWidget(
+                        title: 'The correct word was: $word',
+                        fontSize: 30,
+                      ),
+                      Visibility(
+                          visible: isPressed,
+                          child: TextWidget(
+                              title: 'Highscore submitted!', fontSize: 20,)),
+                    ],
+                  )),
+                  actions: [
+                    LoadButton(
+                        isPressed: isLoading,
+                        onPressed: () {
+                          newGameButton();
+                        },
+                        title: 'New Game'),
+                    LoadButton(
+                        isPressed: isPressed,
+                        onPressed: () {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          highscoreButton();
+                          setState(() {
+                            isLoading = false;
+                            isPressed = true;
+                          });
+                        },
+                        title: 'Submit highscore'),
+                    LoadButton(
+                        isPressed: isLoading,
+                        onPressed: () {
+                          returnButton();
+                        },
+                        title: 'Return to title'),
                   ],
-                )),
-                actions: [
-                  LoadButton(
-                      isPressed: isLoading,
-                      onPressed: () {
-                        newGameButton();
-                      },
-                      title: 'New Game'),
-                  LoadButton(
-                    isPressed: isPressed,
-                      onPressed: () {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        highscoreButton();
-                        setState(() {
-                          isLoading = false;
-                          isPressed = true;
-                        });
-                      },
-                      title: 'Submit highscore'),
-                  LoadButton(
-                      isPressed: isLoading,
-                      onPressed: () {
-                        returnButton();
-                      },
-                      title: 'Return to title'),
-                ],
+                ),
               );
             });
           });
