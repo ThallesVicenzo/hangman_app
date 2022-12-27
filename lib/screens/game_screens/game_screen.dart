@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,24 +46,29 @@ class _GameScreenState extends State<GameScreen> {
 
   late int showPoints;
 
-  int get getLength => word.length;
-
   bool isLoading = false;
   bool isVisible = false;
   bool isPressed = false;
   bool disable = true;
 
-  bool get finishedGame =>
-      gameTile.correctChar.join().sort().toUpperCase() ==
-      word.sort().toUpperCase();
+  List<String> get filterOnWord =>
+  LinkedHashSet<String>.from(word.toUpperCase().split('')).toList();
+
+  bool get finishedGame => gameTile.correctChar.join().sort().toUpperCase() ==
+      filterOnWord.join().sort().toUpperCase();
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference highscores =
       FirebaseFirestore.instance.collection('highscores');
+
   final _auth = FirebaseAuth.instance;
+
   HangmanJsonRequest jsonRequest = HangmanJsonRequest();
+
   String documentId = '';
+
   late final docData;
+
   late final GameTile gameTile;
 
   @override
@@ -206,6 +212,7 @@ class _GameScreenState extends State<GameScreen> {
           });
     }
   }
+
 
   Future updateToNewGame() async {
     if (finishedGame) {
@@ -431,6 +438,9 @@ class _GameScreenState extends State<GameScreen> {
                                       }
                                       updateToGameOver();
                                       updateToNewGame();
+
+                                      print(word);
+                                      print(gameTile.correctChar);
                                     });
                                   });
                       }).toList(),
