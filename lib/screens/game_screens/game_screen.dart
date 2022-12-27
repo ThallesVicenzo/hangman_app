@@ -232,6 +232,12 @@ class _GameScreenState extends State<GameScreen> {
                   child: Column(children: [
                     TextWidget(
                         title: 'Your highscore is: $showPoints', fontSize: 25),
+                    Visibility(
+                        visible: isPressed,
+                        child: TextWidget(
+                          title: 'Highscore submitted!',
+                          fontSize: 20,
+                        )),
                   ]),
                 ),
                 actions: [
@@ -280,7 +286,7 @@ class _GameScreenState extends State<GameScreen> {
                             borderRadius: BorderRadius.circular(15),
                             side: BorderSide(
                                 width: 3,
-                                color: isLoading ? Colors.red : Colors.white),
+                                color: Colors.white),
                           ),
                         ),
                       ),
@@ -290,7 +296,6 @@ class _GameScreenState extends State<GameScreen> {
                       child: TextWidget(
                         title: 'Return to title',
                         fontSize: 25,
-                        isLoading: isLoading,
                       ),
                     ),
                   ),
