@@ -52,9 +52,10 @@ class _GameScreenState extends State<GameScreen> {
   bool disable = true;
 
   List<String> get filterOnWord =>
-  LinkedHashSet<String>.from(word.toUpperCase().split('')).toList();
+      LinkedHashSet<String>.from(word.toUpperCase().split('')).toList();
 
-  bool get finishedGame => gameTile.correctChar.join().sort().toUpperCase() ==
+  bool get finishedGame =>
+      gameTile.correctChar.join().sort().toUpperCase() ==
       filterOnWord.join().sort().toUpperCase();
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -213,7 +214,6 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-
   Future updateToNewGame() async {
     if (finishedGame) {
       showPoints++;
@@ -284,9 +284,7 @@ class _GameScreenState extends State<GameScreen> {
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(
-                                width: 3,
-                                color: Colors.white),
+                            side: BorderSide(width: 3, color: Colors.white),
                           ),
                         ),
                       ),
