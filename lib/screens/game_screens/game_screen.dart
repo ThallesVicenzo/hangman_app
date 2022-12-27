@@ -109,14 +109,14 @@ class _GameScreenState extends State<GameScreen> {
     return highscores.doc(documentId).set(setData);
   }
 
-  Future<Future<Object?>?> newGameButton() async {
+  Future<Future<Object?>?> newGameButton(int highscore) async {
     if (isLoading == false) {
       await listDataRandomizer();
       return Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) {
         return GameScreen(
           hangmanData: hangmanGame,
-          showPoints: showPoints,
+          showPoints: highscore,
         );
       }));
     } else {
@@ -177,7 +177,7 @@ class _GameScreenState extends State<GameScreen> {
                     LoadButton(
                         isPressed: isLoading,
                         onPressed: () {
-                          newGameButton();
+                          newGameButton(0);
                         },
                         title: 'New Game'),
                     LoadButton(
@@ -242,7 +242,7 @@ class _GameScreenState extends State<GameScreen> {
                         ),
                       ),
                       onPressed: () {
-                        newGameButton();
+                        newGameButton(showPoints);
                       },
                       child: TextWidget(
                         title: 'Next Word',
@@ -251,26 +251,19 @@ class _GameScreenState extends State<GameScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            side: BorderSide(
-                                width: 3,
-                                color: isLoading ? Colors.red : Colors.white),
-                          ),
-                        ),
-                        onPressed: () async {
-                          //highscoreButton();
-                        },
-                        child: TextWidget(
-                          title: 'Submit Highscore',
-                          fontSize: 25,
-                          isLoading: isLoading,
-                        )),
-                  ),
+                  LoadButton(
+                      isPressed: isPressed,
+                      onPressed: () {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        highscoreButton();
+                        setState(() {
+                          isLoading = false;
+                          isPressed = true;
+                        });
+                      },
+                      title: 'Submit highscore'),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextButton(
