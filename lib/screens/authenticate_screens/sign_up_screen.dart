@@ -36,8 +36,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return 'Can\'t have more than 7 characters';
     }
     final queryNickname = await users.where('nickname', isEqualTo: text).get();
-    final index = queryNickname.docs.indexWhere((e) => e.get('nickname') == text);
-    if(index != -1){
+    final index =
+        queryNickname.docs.indexWhere((e) => e.get('nickname') == text);
+    if (index != -1) {
       return 'Nickname already exist!';
     }
     return null;
@@ -85,13 +86,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             );
           });
-    }
-    else{
+    } else {
       try {
-        userId = _auth.currentUser?.uid;
-        await users.doc(userId).set(setUserData(email, password, nickname));
         await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+        userId = _auth.currentUser?.uid;
+        await users.doc(userId).set(setUserData(email, password, nickname));
         Navigator.pushReplacementNamed(context, NamedRoutes.gameHome);
       } on FirebaseAuthException catch (e) {
         setState(() {
