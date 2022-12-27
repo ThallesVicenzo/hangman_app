@@ -1,6 +1,7 @@
-class GameTile{
-  static List<String> selectedChar = [];
-  static List<String> kKeyboard = [
+class GameTile {
+  List<String> selectedChar = [];
+  List<String> correctChar = [];
+  List<String> kKeyboard = [
     'A',
     'B',
     'C',
