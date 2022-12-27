@@ -14,6 +14,15 @@ import '../../services/hangman_json/json-request.dart';
 import '../../widgets/letter.dart';
 import '../../widgets/show_dialog_method.dart';
 
+extension CharSorting on String {
+  String sort() {
+    final charList = this.split('');
+    charList.sort();
+
+    return charList.join();
+  }
+}
+
 class GameScreen extends StatefulWidget {
   GameScreen({@required this.hangmanData, this.showPoints});
 
@@ -36,12 +45,16 @@ class _GameScreenState extends State<GameScreen> {
 
   late int showPoints;
 
+  int get getLength => word.length;
+
   bool isLoading = false;
   bool isVisible = false;
   bool isPressed = false;
   bool disable = true;
 
-  late List<bool> keyboard; //essa Lista guarda os booleanos
+  bool get finishedGame =>
+      gameTile.correctChar.join().sort().toUpperCase() ==
+      word.sort().toUpperCase();
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference highscores =
@@ -50,15 +63,15 @@ class _GameScreenState extends State<GameScreen> {
   HangmanJsonRequest jsonRequest = HangmanJsonRequest();
   String documentId = '';
   late final docData;
+  late final GameTile gameTile;
 
   @override
   initState() {
     super.initState();
     hangmanGame = widget.hangmanData;
     documentId = _auth.currentUser!.uid;
-    GameTile.selectedChar.clear();
+    gameTile = GameTile();
     hangmanModel();
-    keyboard = List.generate(26, (index) => false);
     showPoints = widget.showPoints == null ? 0 : widget.showPoints!;
     getNickname();
   }
@@ -129,7 +142,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   Future updateToGameOver() async {
-    if (tries == 5) {
+    if (tries == 6) {
       showDialog(
           barrierDismissible: false,
           context: context,
@@ -155,7 +168,9 @@ class _GameScreenState extends State<GameScreen> {
                       Visibility(
                           visible: isPressed,
                           child: TextWidget(
-                              title: 'Highscore submitted!', fontSize: 20,)),
+                            title: 'Highscore submitted!',
+                            fontSize: 20,
+                          )),
                     ],
                   )),
                   actions: [
@@ -192,99 +207,99 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-/*
   Future updateToNewGame() async {
-    if (hangmanString == solution) {
-    showPoints++;
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (BuildContext context, setState) {
-            return AlertDialog(
-              backgroundColor: kBackgroundColor,
-              title: TextWidget(
-                title: 'Congratulations!',
-                fontSize: 40,
-              ),
-              content: SingleChildScrollView(
-                child: Column(children: [
-                  TextWidget(
-                      title: 'Your highscore is: $showPoints', fontSize: 25),
-                ]),
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          side: BorderSide(
-                              width: 3,
-                              color: isLoading ? Colors.red : Colors.white),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      newGameButton();
-                    },
-                    child: TextWidget(
-                      title: 'Next Word',
-                      fontSize: 25,
-                      isLoading: isLoading,
-                    ),
-                  ),
+    if (finishedGame) {
+      showPoints++;
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(builder: (BuildContext context, setState) {
+              return AlertDialog(
+                backgroundColor: kBackgroundColor,
+                title: TextWidget(
+                  title: 'Congratulations!',
+                  fontSize: 40,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          side: BorderSide(
-                              width: 3,
-                              color: isLoading ? Colors.red : Colors.white),
+                content: SingleChildScrollView(
+                  child: Column(children: [
+                    TextWidget(
+                        title: 'Your highscore is: $showPoints', fontSize: 25),
+                  ]),
+                ),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
+                          ),
                         ),
                       ),
-                      onPressed: () async {
-                        //highscoreButton();
+                      onPressed: () {
+                        newGameButton();
                       },
                       child: TextWidget(
-                        title: 'Submit Highscore',
+                        title: 'Next Word',
                         fontSize: 25,
                         isLoading: isLoading,
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          side: BorderSide(
-                              width: 3,
-                              color: isLoading ? Colors.red : Colors.white),
-                        ),
                       ),
                     ),
-                    onPressed: () {
-                      returnButton();
-                    },
-                    child: TextWidget(
-                      title: 'Return to title',
-                      fontSize: 25,
-                      isLoading: isLoading,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
+                          ),
+                        ),
+                        onPressed: () async {
+                          //highscoreButton();
+                        },
+                        child: TextWidget(
+                          title: 'Submit Highscore',
+                          fontSize: 25,
+                          isLoading: isLoading,
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            side: BorderSide(
+                                width: 3,
+                                color: isLoading ? Colors.red : Colors.white),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        returnButton();
+                      },
+                      child: TextWidget(
+                        title: 'Return to title',
+                        fontSize: 25,
+                        isLoading: isLoading,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            });
           });
-        });
-  }*/
+    }
+  }
 
   Future updateUiWithHint() async {
     if (totalHints > 0 && tries < 5) {
@@ -380,12 +395,11 @@ class _GameScreenState extends State<GameScreen> {
                     direction: Axis.vertical,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: word
                             .split('')
                             .map((e) => Letter(
                                 e.toUpperCase(),
-                                !GameTile.selectedChar
+                                !gameTile.selectedChar
                                     .contains(e.toUpperCase())))
                             .toList(),
                       ),
@@ -398,11 +412,11 @@ class _GameScreenState extends State<GameScreen> {
                       mainAxisSpacing: 8.0,
                       crossAxisSpacing: 8,
                       padding: EdgeInsets.all(8.0),
-                      children: GameTile.kKeyboard.map((e) {
+                      children: gameTile.kKeyboard.map((e) {
                         return RawMaterialButton(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(4.0)),
-                            fillColor: GameTile.selectedChar.contains(e)
+                            fillColor: gameTile.selectedChar.contains(e)
                                 ? Colors.grey
                                 : Colors.blue,
                             child: TextWidget(
@@ -410,17 +424,20 @@ class _GameScreenState extends State<GameScreen> {
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
                             ),
-                            onPressed: GameTile.selectedChar.contains(e)
+                            onPressed: gameTile.selectedChar.contains(e)
                                 ? null
                                 : () {
                                     setState(() {
-                                      GameTile.selectedChar.add(e);
-                                      updateToGameOver();
+                                      gameTile.selectedChar.add(e);
                                       if (!word
                                           .split('')
                                           .contains(e.toUpperCase())) {
                                         tries++;
+                                      } else {
+                                        gameTile.correctChar.add(e);
                                       }
+                                      updateToGameOver();
+                                      updateToNewGame();
                                     });
                                   });
                       }).toList(),
