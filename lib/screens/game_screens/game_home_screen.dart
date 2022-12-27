@@ -178,8 +178,6 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                   fontSize: 20,
                   onPressed: () async {
                     await listDataRandomizer();
-                    GameTile.selectedChar.clear();
-                    print(hangmanData);
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       return GameScreen(
