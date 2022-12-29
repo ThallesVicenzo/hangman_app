@@ -397,15 +397,17 @@ class _GameScreenState extends State<GameScreen> {
                   Wrap(
                     direction: Axis.vertical,
                     children: [
-                      Row(
-                        children: word
-                            .split('')
-                            .map((e) => Letter(
-                                e.toUpperCase(),
-                                !gameTile.selectedChar
-                                    .contains(e.toUpperCase())))
-                            .toList(),
-                      ),
+                      SingleChildScrollView(
+                        child: Row(
+                          children: word
+                              .split('')
+                              .map((e) => Letter(
+                                  e.toUpperCase(),
+                                  !gameTile.selectedChar
+                                      .contains(e.toUpperCase())))
+                              .toList(),
+                        ),
+                      )
                     ],
                   ),
                   SizedBox(
