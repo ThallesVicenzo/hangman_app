@@ -949,7 +949,7 @@
   },
   {
     "word": "Sofa",
-    "hint": "Móvel utilizado para se sentar"
+    "hint": "Móvel utilizado para descansar"
   },
   {
     "word": "Vaso",
@@ -957,7 +957,342 @@
   },
   {
     "word": "Almofada",
-    "hint": "Móvel utilizado em sofás para o aconchego"
+    "hint": "Utilizado em sofás para o aconchego"
+  },
+  {
+    "word": "Leao",
+    "hint": "Felino, vive na savana"
+  },
+  {
+    "word": "Tigre",
+    "hint": "Felino, vive na ásia"
+  },
+  {
+    "word": "Elefante",
+    "hint": "O quarto animal mais inteligente do mundo"
+  },
+  {
+    "word": "Baleia",
+    "hint": "Mamífero aquático"
+  },
+  {
+    "word": "Gato",
+    "hint": "Felino está espalhado pelo mundo todo"
+  },
+  {
+    "word": "Cachorro",
+    "hint": "Melhor amigo do homem"
+  },
+  {
+    "word": "Skate",
+    "hint": "Manobras radicais"
+  },
+  {
+    "word": "Abelha",
+    "hint": "Inseto voador"
+  },
+  {
+    "word": "Formiga",
+    "hint": "Inseto geralmente terreste, porém pode ser voador também"
+  },
+  {
+    "word": "Barata",
+    "hint": "Inseto considerado nojento pela maior parte das pessoas"
+  },
+  {
+    "word": "BemTeVI",
+    "hint": "É conhecido pelo seu canto"
+  },
+  {
+    "word": "PicaPau",
+    "hint": "Bastante famoso pelo seu desenho animado"
+  },
+  {
+    "word": "Aguia",
+    "hint": "Um dos pássaros mais famosos"
+  },
+  {
+    "word": "Peixe",
+    "hint": "Aquático"
+  },
+  {
+    "word": "BaleiaOrca",
+    "hint": "Um dos animais mais inteligentes do mundo"
+  },
+  {
+    "word": "Golfinho",
+    "hint": "O segundo animal mais inteligente do mundo"
+  },
+  {
+    "word": "Orangotango",
+    "hint": "O animal mais inteligente do mundo"
+  },
+  {
+    "word": "Chimpanze",
+    "hint": "O terceiro animal mais inteligente do mundo"
+  },
+  {
+    "word": "Polvo",
+    "hint": "O sexto animal mais inteligente do mundo"
+  },
+  {
+    "word": "Golfinho",
+    "hint": "O segundo animal mais inteligente do mundo"
+  },
+  {
+    "word": "Porco",
+    "hint": "O sétimo animal mais inteligente do mundo"
+  },
+  {
+    "word": "Corvo",
+    "hint": "O oitavo animal mais inteligente do mundo"
+  },
+  {
+    "word": "Papagaio",
+    "hint": "A ave mais inteligente do mundo"
+  },
+  {
+    "word": "Rato",
+    "hint": "Mamífero de pequeno porte"
+  },
+  {
+    "word": "Gorila",
+    "hint": "Primata de grande porte"
+  },
+  {
+    "word": "Tatu",
+    "hint": "Conhecido pelo seu casco"
+  },
+  {
+    "word": "Tubarao",
+    "hint": "Predador alfa dos mares"
+  },
+  {
+    "word": "Tartaruga",
+    "hint": "Aquático, ameaçado de extinção"
+  },
+  {
+    "word": "Cagado",
+    "hint": "Conhecido pelo seu casco, réptil"
+  },
+  {
+    "word": "Jabuti",
+    "hint": "Réptil, bastante lento por conta de seu casco"
+  },
+  {
+    "word": "Calopsita",
+    "hint": "Ave bastante criada para a estimação"
+  },
+  {
+    "word": "Esponja",
+    "hint": "Animal aquático conheco pelo seu desenho animado"
+  },
+  {
+    "word": "Equidna",
+    "hint": "Mamífero que põe ovos"
+  },
+  {
+    "word": "Ornintorrinco",
+    "hint": "Mamífero que põe ovos"
+  },
+  {
+    "word": "Crocodilo",
+    "hint": "Maior réptil existente"
+  },
+  {
+    "word": "Lampreia",
+    "hint": "É conhecido como vampiro aquático"
+  },
+  {
+    "word": "Celacanto",
+    "hint": "Parentes mais próximos da primeira criatura a andar sobre a terra"
+  },
+  {
+    "word": "limulo",
+    "hint": "Crustáceo que possui o sangue azul"
+  },
+  {
+    "word": "Nautilo",
+    "hint": "Conhecido pelo casco em que vive"
+  },
+  {
+    "word": "Aranha",
+    "hint": "São conhecidos por possuirem 8 pernas"
+  },
+  {
+    "word": "Pombo",
+    "hint": "Uma das aves mais inteligente que existe"
+  },
+  {
+    "word": "Besouro",
+    "hint": "Primo mais famoso da joaninha"
+  },
+  {
+    "word": "Joaninha",
+    "hint": "Primo mais famoso do besouro"
+  },
+  {
+    "word": "Serpente",
+    "hint": "Réptil rastejante"
+  },
+  {
+    "word": "Naja",
+    "hint": "Réptil rastejante"
+  },
+  {
+    "word": "Jiboia",
+    "hint": "Réptil rastejante, mata por asfixia"
+  },
+  {
+    "word": "Piton",
+    "hint": "Conhecido por engolir a sua presa por completo"
+  },
+  {
+    "word": "Serpente",
+    "hint": "Réptil rastejante"
+  },
+  {
+    "word": "Vaca",
+    "hint": "Bovino"
+  },
+  {
+    "word": "Boi",
+    "hint": "Bovino"
+  },
+  {
+    "word": "Veado",
+    "hint": "Mamífero herbívoro"
+  },
+  {
+    "word": "Cervo",
+    "hint": "Mamífero herbívoro"
+  },
+  {
+    "word": "Alce",
+    "hint": "Mamífero herbívoro"
+  },
+  {
+    "word": "Mamute",
+    "hint": "Animal extindo, conhecido por suas presas"
+  },
+  {
+    "word": "Caracol",
+    "hint": "Invertebrado"
+  },
+  {
+    "word": "Cavalo",
+    "hint": "Animal utilizado para o transporte"
+  },
+  {
+    "word": "Zebra",
+    "hint": "Vive na savana"
+  },
+  {
+    "word": "Hipopotamo",
+    "hint": "Vive na savana"
+  },
+  {
+    "word": "Urso",
+    "hint": "Conhecido como o predador mais completo do mundo"
+  },
+  {
+    "word": "Sapo",
+    "hint": "Anfíbio"
+  },
+  {
+    "word": "Cururu",
+    "hint": "Anfíbio"
+  },
+  {
+    "word": "SapoDeVidro",
+    "hint": "Anfíbio ameaçado de extinção"
+  },
+  {
+    "word": "Coala",
+    "hint": "Nativo da autrália, corre perigo de extinção"
+  },
+  {
+    "word": "Panda",
+    "hint": "Da família dos ursos, conhecidos por sua fofura"
+  },
+  {
+    "word": "Guaxinim",
+    "hint": "Vive na savana"
+  },
+  {
+    "word": "Quokka",
+    "hint": "Animal mais feliz do mundo"
+  },
+  {
+    "word": "Lobo",
+    "hint": "Parente próximo dos cachorro"
+  },
+  {
+    "word": "Quokka",
+    "hint": "Animal mais feliz do mundo"
+  },
+  {
+    "word": "UrsoPolar",
+    "hint": "Encontrado no círculo polar ártico"
+  },
+  {
+    "word": "ArarinhaAzul",
+    "hint": "Ave conhecida por sua coloração, atualmente extinta"
+  },
+  {
+    "word": "Tamandua",
+    "hint": "Animal brasileiro, considerado em extinção"
+  },
+  {
+    "word": "Minhoca",
+    "hint": "Animal rastejante, passa a maior parte de sua vida na terra"
+  },
+  {
+    "word": "Ariranha",
+    "hint": "Mamífero carnívoro, exclusivamente sul americano"
+  },
+  {
+    "word": "Sagui",
+    "hint": "Espécie de macaco, que vive no Brasil"
+  },
+  {
+    "word": "Alce",
+    "hint": "Mais espécie da família dos cervos"
+  },
+  {
+    "word": "Urubu",
+    "hint": "Ave conhecida por seus hábitos necrófagos"
+  },
+  {
+    "word": "Mosquito",
+    "hint": "Inseto voador que pestaneia os animais com seu zunido"
+  },
+  {
+    "word": "AguaViva",
+    "hint": "Animal aquático conhecido por não poder tocar nele"
+  },
+  {
+    "word": "Pavao",
+    "hint": "Ave conhecida por suas asas lindas e grandes"
+  },
+  {
+    "word": "Pinguim",
+    "hint": "Ave que não voa"
+  },
+  {
+    "word": "Galinha",
+    "hint": "Ave que não voa"
+  },
+  {
+    "word": "BeijaFlor",
+    "hint": "Ave conhecida por seu hábito e por voar muito rápido"
+  },
+  {
+    "word": "Falcao",
+    "hint": "São aves predadoras de pequeno/médio porte e atingem velocidades rápidas"
+  },
+  {
+    "word": "Urubu",
+    "hint": "Ave conhecida por seus hábitos necrófagos"
   }
-
 ]
