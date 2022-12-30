@@ -394,21 +394,13 @@ class _GameScreenState extends State<GameScreen> {
                       HangImage(tries >= 6, 'assets/images/0.png'),
                     ],
                   ),
-                  Wrap(
-                    direction: Axis.vertical,
-                    children: [
-                      SingleChildScrollView(
-                        child: Row(
-                          children: word
-                              .split('')
-                              .map((e) => Letter(
-                                  e.toUpperCase(),
-                                  !gameTile.selectedChar
-                                      .contains(e.toUpperCase())))
-                              .toList(),
-                        ),
-                      )
-                    ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: word
+                        .split('')
+                        .map((e) => Letter(e.toUpperCase(),
+                            !gameTile.selectedChar.contains(e.toUpperCase())))
+                        .toList(),
                   ),
                   SizedBox(
                     height: 250,

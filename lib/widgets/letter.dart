@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
 
 Widget Letter(String character, bool hidden) {
-  return Container(
-    height: 65,
-    width: 50,
-    decoration: BoxDecoration(
-      color: Colors.black45,
-      borderRadius: BorderRadius.circular(4.0),
-    ),
-    child: Visibility(
-      visible: !hidden,
-      child: Center(
-        child: TextWidget(
-          title: character,
-          fontSize: 40,
-          fontWeight: FontWeight.bold,
+  return Flexible(
+    child: Container(
+      height: 65,
+      width: 50,
+      decoration: BoxDecoration(
+        color: Colors.black45,
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Visibility(
+        visible: !hidden,
+        child: Center(
+          child: TextWidget(
+            title: character,
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     ),
