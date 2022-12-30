@@ -578,6 +578,386 @@
   {
     "word": "Renan",
     "hint": "Masculino"
+  },
+  {
+    "word": "Botija",
+    "hint": "Usado para conter genebra ou outros líquidos."
+  },
+  {
+    "word": "Cama",
+    "hint": "Utilizado para o descanso"
+  },
+  {
+    "word": "Cubo",
+    "hint": "Quebra cabeça popular nos anos 80/90"
+  },
+  {
+    "word": "Copo",
+    "hint": "Usado armazenar liquidos para o consumo."
+  },
+  {
+    "word": "Faca",
+    "hint": "Utilizado para a alimentação"
+  },
+  {
+    "word": "Botija",
+    "hint": "Material escolar"
+  },
+  {
+    "word": "Celular",
+    "hint": "Aparelho eletrônico"
+  },
+  {
+    "word": "Balao",
+    "hint": "Decoração de festas de aniversário"
+  },
+  {
+    "word": "Caderno",
+    "hint": "Material escolar"
+  },
+  {
+    "word": "Garfo",
+    "hint": "Utilizado para a alimentação"
+  },
+  {
+    "word": "Óculos",
+    "hint": "Ajuda a enchergar melhor"
+  },
+  {
+    "word": "Meias",
+    "hint": "São utilizadas nos pés"
+  },
+  {
+    "word": "Pijama",
+    "hint": "Algumas pessoas usam para dormir"
+  },
+  {
+    "word": "Prato",
+    "hint": "Utilizado para a alimentação"
+  },
+  {
+    "word": "Panela",
+    "hint": "Objeto de cozinha"
+  },
+  {
+    "word": "Fogao",
+    "hint": "Objeto de cozinha"
+  },
+  {
+    "word": "Controle",
+    "hint": "Permite o controle de alguns aparelhos eletrônicos"
+  },
+  {
+    "word": "Carteira",
+    "hint": "É um objeto pequeno que armazena documentos/dinheiro"
+  },
+  {
+    "word": "Documentos",
+    "hint": "Contém informações importantes sobre um indivíduo"
+  },
+  {
+    "word": "Dinheiro",
+    "hint": "Não traz a felicidade"
+  },
+  {
+    "word": "Teclado",
+    "hint": "Hardware de computador"
+  },
+  {
+    "word": "Gabinete",
+    "hint": "Hardware de computador"
+  },
+  {
+    "word": "Mouse",
+    "hint": "Hardware de computador"
+  },
+  {
+    "word": "Monitor",
+    "hint": "Hardware de computador"
+  },
+  {
+    "word": "Cooler",
+    "hint": "Hardware de computador"
+  },
+  {
+    "word": "Televisao",
+    "hint": "Aparelho eletrônico"
+  },
+  {
+    "word": "Carregador",
+    "hint": "Recarrega um aparelho eletrônico"
+  },
+  {
+    "word": "Bateria",
+    "hint": "Armazena eletrecidade"
+  },
+  {
+    "word": "Chaves",
+    "hint": "Abre portas"
+  },
+  {
+    "word": "Cadeado",
+    "hint": "Tranca portas"
+  },
+  {
+    "word": "Porta",
+    "hint": "Serve para entrar e sair de alguma sala"
+  },
+  {
+    "word": "Lampada",
+    "hint": "Ilumina"
+  },
+  {
+    "word": "Lanterna",
+    "hint": "Ilumina"
+  },
+  {
+    "word": "Isqueiro",
+    "hint": "Alguns usam para iluminar, outros para o consumo do cigarro"
+  },
+  {
+    "word": "Console",
+    "hint": "Hobby de alguns, ganha pão de outros"
+  },
+  {
+    "word": "Computador",
+    "hint": "Inventado por Alan Turing"
+  },
+  {
+    "word": "Cabo",
+    "hint": "Transporta eletrecidade, informações, dados, etc"
+  },
+  {
+    "word": "WebCam",
+    "hint": "Hardware de computador"
+  },
+  {
+    "word": "Mesa",
+    "hint": "Móvel, geralmente utilizado para reuniões ou refeições"
+  },
+  {
+    "word": "Armario",
+    "hint": "Móvel, Utilizado para armazenar pequenos objetos"
+  },
+  {
+    "word": "GuardaRoupa",
+    "hint": "Móvel, Utilizado para armazenar roupas"
+  },
+  {
+    "word": "Camisa",
+    "hint": "Roupa"
+  },
+  {
+    "word": "Bermuda",
+    "hint": "Roupa"
+  },
+  {
+    "word": "Vestido",
+    "hint": "Roupa"
+  },
+  {
+    "word": "Camiseta",
+    "hint": "Roupa"
+  },
+  {
+    "word": "Camisola",
+    "hint": "Roupa"
+  },
+  {
+    "word": "Blusa",
+    "hint": "Roupa"
+  },
+  {
+    "word": "Relogio",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Pulseira",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Chapeu",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Colar",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Anel",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Brinco",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Chinelo",
+    "hint": "Protege os pés"
+  },
+  {
+    "word": "Sapato",
+    "hint": "Protege os pés"
+  },
+  {
+    "word": "Botas",
+    "hint": "Protege os pés"
+  },
+  {
+    "word": "Presilha",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Piercing",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Pente",
+    "hint": "Cosmético"
+  },
+  {
+    "word": "Shampoo",
+    "hint": "Cosmético"
+  },
+  {
+    "word": "Condicionador",
+    "hint": "Cosmético"
+  },
+  {
+    "word": "Maquiagem",
+    "hint": "Cosmético"
+  },
+  {
+    "word": "EscovaDeDente",
+    "hint": "Higiene"
+  },
+  {
+    "word": "Perfume",
+    "hint": "Cosmético"
+  },
+  {
+    "word": "Espelho",
+    "hint": "Reflete a luz"
+  },
+  {
+    "word": "Mochila",
+    "hint": "Armazena objetos de preferência não pesados para não doer as costas"
+  },
+  {
+    "word": "CartaoDeCredito",
+    "hint": "Utilizado para compras"
+  },
+  {
+    "word": "Sabonete",
+    "hint": "Higiene"
+  },
+  {
+    "word": "Livro",
+    "hint": "Contém palavras escritas a mão"
+  },
+  {
+    "word": "Caneta",
+    "hint": "Utilizado para a escrita"
+  },
+  {
+    "word": "Lapis",
+    "hint": "Utilizado para a escrita"
+  },
+  {
+    "word": "Microondas",
+    "hint": "Eletro-doméstico"
+  },
+  {
+    "word": "AirFryer",
+    "hint": "Eletro-doméstico"
+  },
+  {
+    "word": "Fritadeira",
+    "hint": "Eletro-doméstico"
+  },
+  {
+    "word": "Churrasqueira",
+    "hint": "Assa carne"
+  },
+  {
+    "word": "Liquidificador",
+    "hint": "Eletro-doméstico"
+  },
+  {
+    "word": "Carro",
+    "hint": "Automovel"
+  },
+  {
+    "word": "Moto",
+    "hint": "Automovel"
+  },
+  {
+    "word": "Aviao",
+    "hint": "Automovel"
+  },
+  {
+    "word": "JetSki",
+    "hint": "Navegações marítimas"
+  },
+  {
+    "word": "Navio",
+    "hint": "Navegações marítimas"
+  },
+  {
+    "word": "Barco",
+    "hint": "Navegações marítimas"
+  },
+  {
+    "word": "Canoa",
+    "hint": "Navegações marítimas"
+  },
+  {
+    "word": "Bicicleta",
+    "hint": "Utilizado para exercícios ou locomoção"
+  },
+  {
+    "word": "Chuveiro",
+    "hint": "Serve para tomar banho"
+  },
+  {
+    "word": "Arma",
+    "hint": "Instrumento de defesa pessoal"
+  },
+  {
+    "word": "Soqueira",
+    "hint": "Instrumento de defesa pessoal"
+  },
+  {
+    "word": "Enxada",
+    "hint": "Utilizado no campo"
+  },
+  {
+    "word": "Regador",
+    "hint": "Utilizado no campo"
+  },
+  {
+    "word": "Moeda",
+    "hint": "Utilizado para a compra"
+  },
+  {
+    "word": "Foguete",
+    "hint": "Viajens espaciais"
+  },
+  {
+    "word": "Cadeira",
+    "hint": "Móvel utilizado para se sentar"
+  },
+  {
+    "word": "Sofa",
+    "hint": "Móvel utilizado para se sentar"
+  },
+  {
+    "word": "Vaso",
+    "hint": "Armazena objetos, a maioria das pessoas armazena flores"
+  },
+  {
+    "word": "Almofada",
+    "hint": "Móvel utilizado em sofás para o aconchego"
   }
 
 ]

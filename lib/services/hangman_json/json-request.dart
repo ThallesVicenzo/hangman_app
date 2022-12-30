@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-const jsonPath = 'assets/json/names.json';
+const jsonPath = 'assets/json/words.json';
 
 class HangmanJsonRequest {
 
