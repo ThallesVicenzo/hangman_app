@@ -1292,7 +1292,39 @@
     "hint": "São aves predadoras que atingem velocidades rápidas"
   },
   {
-    "word": "Urubu",
-    "hint": "Ave conhecida por seus hábitos necrófagos"
+    "word": "Dragao",
+    "hint": "Animal de fantástico voador"
+  },
+  {
+    "word": "Burro",
+    "hint": "Parente menor do cavalo"
+  },
+  {
+    "word": "DragaoDeKomodo",
+    "hint": "Réptil venenoso, se assemelha a um lagarto"
+  },
+  {
+    "word": "Lagarto",
+    "hint": "Réptil, come tudo que for menor que ele"
+  },
+  {
+    "word": "Ampulheta",
+    "hint": "Objeto que é utilizado como temporizador"
+  },
+  {
+    "word": "Anel",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Pulseira",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Piercing",
+    "hint": "Acessório"
+  },
+  {
+    "word": "Tatuagem",
+    "hint": "Dói muito pra fazer, difícil de sair"
   }
 ]
