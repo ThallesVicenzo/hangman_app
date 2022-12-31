@@ -841,7 +841,7 @@
   },
   {
     "word": "Mochila",
-    "hint": "Armazena objetos de preferência não pesados para não doer as costas"
+    "hint": "Armazena objetos, utilizado nas costas"
   },
   {
     "word": "CartaoDeCredito",
@@ -953,7 +953,7 @@
   },
   {
     "word": "Vaso",
-    "hint": "Armazena objetos, a maioria das pessoas armazena flores"
+    "hint": "Cerâmica"
   },
   {
     "word": "Almofada",
@@ -993,7 +993,7 @@
   },
   {
     "word": "Formiga",
-    "hint": "Inseto geralmente terreste, porém pode ser voador também"
+    "hint": "Um dos insetos mais inteligentes"
   },
   {
     "word": "Barata",
@@ -1105,14 +1105,14 @@
   },
   {
     "word": "Celacanto",
-    "hint": "Parentes mais próximos da primeira criatura a andar sobre a terra"
+    "hint": "Animal aquático, considerado um fóssil vivo"
   },
   {
     "word": "limulo",
     "hint": "Crustáceo que possui o sangue azul"
   },
   {
-    "word": "Nautilo",
+    "word": "Nautilus",
     "hint": "Conhecido pelo casco em que vive"
   },
   {
@@ -1245,7 +1245,7 @@
   },
   {
     "word": "Minhoca",
-    "hint": "Animal rastejante, passa a maior parte de sua vida na terra"
+    "hint": "Passa a maior parte de sua vida no subterrânio"
   },
   {
     "word": "Ariranha",
@@ -1265,7 +1265,7 @@
   },
   {
     "word": "Mosquito",
-    "hint": "Inseto voador que pestaneia os animais com seu zunido"
+    "hint": "Inseto voador que pestaneia as pessoas com seu zunido"
   },
   {
     "word": "AguaViva",
@@ -1289,7 +1289,7 @@
   },
   {
     "word": "Falcao",
-    "hint": "São aves predadoras de pequeno/médio porte e atingem velocidades rápidas"
+    "hint": "São aves predadoras que atingem velocidades rápidas"
   },
   {
     "word": "Urubu",
