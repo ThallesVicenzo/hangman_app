@@ -214,9 +214,19 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
+  int addPoints(){
+    if(tries == 0 && totalHints == 1) {
+      return showPoints = showPoints + 10;
+    }
+    if(totalHints == 1){
+      return showPoints = showPoints + 5;
+    }
+    return showPoints++;
+  }
+
   Future updateToNewGame() async {
     if (finishedGame) {
-      showPoints++;
+      addPoints();
       showDialog(
           barrierDismissible: false,
           context: context,
