@@ -390,8 +390,11 @@ class _GameScreenState extends State<GameScreen> {
                     ],
                   ),
                   Visibility(
-                    visible: isVisible,
-                    child: TextWidget(title: hint, fontSize: 30),
+                      visible: isVisible,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: TextWidget(title: hint, fontSize: 30),
+                    ),
                   ),
                   Stack(
                     children: [
