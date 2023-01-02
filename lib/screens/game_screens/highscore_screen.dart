@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hangman_app/constants/constants.dart';
 import 'package:hangman_app/widgets/text_widget.dart';
@@ -63,8 +62,8 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
               ),
             ),
             HighscoreListContent(
-              title1: 'Nickname',
-              title2: 'Score',
+              title1: 'Apelido',
+              title2: 'Highscore',
               fontSize: 30.0,
             ),
             FutureBuilder(

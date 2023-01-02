@@ -22,7 +22,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                 return AlertDialog(
                   backgroundColor: kBackgroundColor,
                   title: TextWidget(
-                    title: 'Are you sure you want to close this app?',
+                    title: 'Você tem certeza que quer fechar o aplicativo?',
                     fontSize: 30,
                   ),
                   actions: [
@@ -39,7 +39,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                           SystemNavigator.pop();
                         },
                         child: TextWidget(
-                          title: 'Yes',
+                          title: 'Sim',
                           fontSize: 25,
                         )),
                     TextButton(
@@ -55,7 +55,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                           Navigator.pop(context);
                         },
                         child: TextWidget(
-                          title: 'No',
+                          title: 'Cancelar',
                           fontSize: 25,
                         )),
                   ],
@@ -88,7 +88,7 @@ class _AuthHomeScreenState extends State<AuthHomeScreen> {
                     height: 20,
                   ),
                   CustomTextButton(
-                    label: 'SignUp',
+                    label: 'Cadastrar',
                     fontSize: 20,
                     onPressed: () {
                       Navigator.pushNamed(context, NamedRoutes.signUp);

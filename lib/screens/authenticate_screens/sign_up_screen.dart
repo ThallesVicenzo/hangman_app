@@ -27,19 +27,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<String?>? _errorText() async {
     final text = _text.value.text;
     if (text.isEmpty) {
-      return 'Can\'t be empty';
+      return 'Não pode ser vazio';
     }
     if (text.length <= 2) {
-      return 'Can\'t have less than 3 characters';
+      return 'Seu apelido não pode ter menos que 3 caracteres.';
     }
     if (text.length > 7) {
-      return 'Can\'t have more than 7 characters';
+      return 'Seu apelido não pode ter mais que 7 caracteres.';
     }
     final queryNickname = await users.where('nickname', isEqualTo: text).get();
     final index =
         queryNickname.docs.indexWhere((e) => e.get('nickname') == text);
     if (index != -1) {
-      return 'Nickname already exist!';
+      return 'Apelido já existe!';
     }
     return null;
   }
@@ -137,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     nickname = value;
                   },
                   decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Type your nickname here: ',
+                    hintText: 'Escreva seu apelido aqui',
                   ),
                 ),
                 SizedBox(
@@ -149,7 +149,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     email = value;
                   },
                   decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Type your email here: ',
+                    hintText: 'Escreva seu email aqui',
                   ),
                 ),
                 SizedBox(
@@ -162,14 +162,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     password = value;
                   },
                   decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Type your password here: ',
+                    hintText: 'Escreva sua senha aqui',
                   ),
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 CustomTextButton(
-                  label: 'Register',
+                  label: 'Cadastrar',
                   onPressed: () async {
                     setState(() {
                       spinning = true;

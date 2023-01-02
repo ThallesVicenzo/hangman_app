@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   email = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Type your email here: '),
+                    hintText: 'Escreva seu email aqui'),
               ),
               SizedBox(
                 height: 20,
@@ -58,13 +58,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   password = value;
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Type your password here: '),
+                    hintText: 'Escreva sua senha aqui'),
               ),
               SizedBox(
                 height: 30,
               ),
               CustomTextButton(
-                  label: 'Login',
+                  label: 'Logar',
                   onPressed: () async {
                     setState(() {
                       spinning = true;

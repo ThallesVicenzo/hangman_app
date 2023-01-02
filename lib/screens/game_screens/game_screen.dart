@@ -162,20 +162,20 @@ class _GameScreenState extends State<GameScreen> {
                 child: AlertDialog(
                   backgroundColor: kBackgroundColor,
                   title: TextWidget(
-                    title: 'You lose!',
+                    title: 'Você perdeu!',
                     fontSize: 50,
                   ),
                   content: SingleChildScrollView(
                       child: Column(
                     children: [
                       TextWidget(
-                        title: 'The correct word was: $word',
+                        title: 'A palavra certa era: $word',
                         fontSize: 30,
                       ),
                       Visibility(
                           visible: isPressed,
                           child: TextWidget(
-                            title: 'Highscore submitted!',
+                            title: 'Highscore Salvo!',
                             fontSize: 20,
                           )),
                     ],
@@ -186,7 +186,7 @@ class _GameScreenState extends State<GameScreen> {
                         onPressed: () {
                           newGameButton(0);
                         },
-                        title: 'New Game'),
+                        title: 'Novo jogo'),
                     LoadButton(
                         isPressed: isPressed,
                         onPressed: () {
@@ -199,13 +199,13 @@ class _GameScreenState extends State<GameScreen> {
                             isPressed = true;
                           });
                         },
-                        title: 'Submit highscore'),
+                        title: 'Salvar Highscore'),
                     LoadButton(
                         isPressed: isLoading,
                         onPressed: () {
                           returnButton();
                         },
-                        title: 'Return to title'),
+                        title: 'Retornar para o menu'),
                   ],
                 ),
               );
@@ -235,17 +235,17 @@ class _GameScreenState extends State<GameScreen> {
               return AlertDialog(
                 backgroundColor: kBackgroundColor,
                 title: TextWidget(
-                  title: 'Congratulations!',
+                  title: 'Parabéns!',
                   fontSize: 40,
                 ),
                 content: SingleChildScrollView(
                   child: Column(children: [
                     TextWidget(
-                        title: 'Your highscore is: $showPoints', fontSize: 25),
+                        title: 'Seu highscore é: $showPoints', fontSize: 25),
                     Visibility(
                         visible: isPressed,
                         child: TextWidget(
-                          title: 'Highscore submitted!',
+                          title: 'Highscore salvo!',
                           fontSize: 20,
                         )),
                   ]),
@@ -268,7 +268,7 @@ class _GameScreenState extends State<GameScreen> {
                         newGameButton(showPoints);
                       },
                       child: TextWidget(
-                        title: 'Next Word',
+                        title: 'Próxima palavra',
                         fontSize: 25,
                         isLoading: isLoading,
                       ),
@@ -286,7 +286,7 @@ class _GameScreenState extends State<GameScreen> {
                           isPressed = true;
                         });
                       },
-                      title: 'Submit highscore'),
+                      title: 'Salvar highscore'),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextButton(
@@ -302,7 +302,7 @@ class _GameScreenState extends State<GameScreen> {
                         returnButton();
                       },
                       child: TextWidget(
-                        title: 'Return to title',
+                        title: 'Retornar para o menu',
                         fontSize: 25,
                       ),
                     ),

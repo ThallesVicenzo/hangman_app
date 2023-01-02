@@ -12,7 +12,7 @@ void EnsureToReturnToHome(BuildContext context) {
           backgroundColor: kBackgroundColor,
           title: TextWidget(
             title:
-            'Are you sure you want to return to home?',
+            'Você tem certeza que quer voltar para o menu?',
             fontSize: 30,
           ),
           actions: [
@@ -35,7 +35,7 @@ void EnsureToReturnToHome(BuildContext context) {
                   );
                 },
                 child: TextWidget(
-                  title: 'Yes',
+                  title: 'Sim',
                   fontSize: 25,
                 )),
             TextButton(
@@ -54,7 +54,7 @@ void EnsureToReturnToHome(BuildContext context) {
                   Navigator.pop(context);
                 },
                 child: TextWidget(
-                  title: 'No',
+                  title: 'Não',
                   fontSize: 25,
                 )),
           ],

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:hangman_app/screens/authenticate_screens/auth_home_screen.dart';
 import 'package:hangman_app/screens/game_screens/game_screen.dart';
 import 'package:hangman_app/services/hangman_json/json-request.dart';
-import 'package:hangman_app/services/tile/game_tile.dart';
 import '../../constants/constants.dart';
 import '../../routes/named_routes.dart';
 import '../../widgets/custom_button.dart';
@@ -52,7 +51,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                 return AlertDialog(
                   backgroundColor: kBackgroundColor,
                   title: TextWidget(
-                    title: 'Are you sure you want to close this app?',
+                    title: 'Você tem certeza que quer fechar o aplicativo?',
                     fontSize: 30,
                   ),
                   actions: [
@@ -69,7 +68,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                           SystemNavigator.pop();
                         },
                         child: TextWidget(
-                          title: 'Yes',
+                          title: 'Sim',
                           fontSize: 25,
                         )),
                     TextButton(
@@ -85,7 +84,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                           Navigator.pop(context);
                         },
                         child: TextWidget(
-                          title: 'No',
+                          title: 'Cancelar',
                           fontSize: 25,
                         )),
                   ],
@@ -110,7 +109,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                             return AlertDialog(
                               backgroundColor: kBackgroundColor,
                               title: TextWidget(
-                                title: 'Are you sure that you want to logout?',
+                                title: 'Você tem certeza que quer deslogar?',
                                 fontSize: 25,
                               ),
                               actions: [
@@ -128,7 +127,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                                     signOut();
                                   },
                                   child: TextWidget(
-                                    title: 'Yes',
+                                    title: 'Sim',
                                     fontSize: 30,
                                   ),
                                 ),
@@ -146,7 +145,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                                     Navigator.pop(context);
                                   },
                                   child: TextWidget(
-                                    title: 'No',
+                                    title: 'Cancelar',
                                     fontSize: 30,
                                   ),
                                 ),
@@ -174,7 +173,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
               ),
               CustomTextButton(
                   width: 130,
-                  label: 'Start',
+                  label: 'Novo jogo',
                   fontSize: 20,
                   onPressed: () async {
                     await listDataRandomizer();
@@ -191,7 +190,7 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                     height: 20,
                   ),
                   CustomTextButton(
-                    label: 'High Scores',
+                    label: 'Highscores',
                     fontSize: 20,
                     onPressed: () {
                       Navigator.pushNamed(
