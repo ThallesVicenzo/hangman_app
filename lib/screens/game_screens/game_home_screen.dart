@@ -184,22 +184,15 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                       );
                     }));
                   }),
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  CustomTextButton(
-                    label: 'Highscores',
-                    fontSize: 20,
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        NamedRoutes.highscores,
-                      );
-                    },
-                  ),
-                ],
+              CustomTextButton(
+                label: 'Ranking',
+                fontSize: 20,
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    NamedRoutes.highscores,
+                  );
+                },
               )
             ],
           ),

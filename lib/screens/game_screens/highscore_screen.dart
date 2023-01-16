@@ -56,8 +56,8 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
                       }));
                     },
                   ),
-                  SizedBox(width: 35),
-                  TextWidget(title: 'HighScores', fontSize: 45),
+                  SizedBox(width: 70),
+                  TextWidget(title: 'Ranking', fontSize: 45),
                 ],
               ),
             ),

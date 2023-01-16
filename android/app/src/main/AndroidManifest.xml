@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.br.hangman_app">
    <application
-        android:label="hangman_app"
+        android:label="Hangman The Game"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -29,7 +29,9 @@ class HighscoreTile extends StatelessWidget {
                   ],
                 ));
           } else {
-            return Column(children: [CircularProgressIndicator()],);
+            return Column(
+              children: [CircularProgressIndicator()],
+            );
           }
         });
   }
