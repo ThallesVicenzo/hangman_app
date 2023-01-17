@@ -17,17 +17,15 @@ class HighscoreTile extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            return Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Column(
-                  children: [
-                    HighscoreListContent(
-                        title1: data['nickname'],
-                        title2: data['highscore'].toString(),
-                        fontSize: 28.0,
-                        fontWeight: FontWeight.w300),
-                  ],
-                ));
+            return Column(
+              children: [
+                HighscoreListContent(
+                    title1: data['nickname'],
+                    title2: data['highscore'].toString(),
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.w300),
+              ],
+            );
           } else {
             return Column(
               children: [CircularProgressIndicator()],

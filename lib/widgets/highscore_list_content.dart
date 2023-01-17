@@ -16,15 +16,11 @@ class HighscoreListContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(5),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          TextWidget(title: title1, fontSize: fontSize, fontWeight: fontWeight),
-          TextWidget(title: title2, fontSize: fontSize, fontWeight: fontWeight),
-        ],
-      ),
+    return Row(
+      children: [
+        TextWidget(title: title1, fontSize: fontSize, fontWeight: fontWeight),
+        TextWidget(title: title2, fontSize: fontSize, fontWeight: fontWeight),
+      ],
     );
   }
 }
