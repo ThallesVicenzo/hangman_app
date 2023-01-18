@@ -64,7 +64,7 @@ class _HighScoreScreenState extends State<HighScoreScreen> {
             HighscoreListContent(
               title1: 'Apelido',
               title2: 'Highscore',
-              fontSize: 30.0,
+              fontSize: 35.0,
             ),
             FutureBuilder(
                 future: getDocIds,

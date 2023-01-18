@@ -17,6 +17,7 @@ class HighscoreListContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         TextWidget(title: title1, fontSize: fontSize, fontWeight: fontWeight),
         TextWidget(title: title2, fontSize: fontSize, fontWeight: fontWeight),
