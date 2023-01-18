@@ -214,11 +214,11 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  int addPoints() {
-    if (tries == 0 && totalHints == 1) {
+  int addPoints(){
+    if(tries == 0 && totalHints == 1) {
       return showPoints = showPoints + 10;
     }
-    if (totalHints == 1) {
+    if(totalHints == 1){
       return showPoints = showPoints + 5;
     }
     return showPoints++;
@@ -390,7 +390,7 @@ class _GameScreenState extends State<GameScreen> {
                     ],
                   ),
                   Visibility(
-                    visible: isVisible,
+                      visible: isVisible,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: TextWidget(title: hint, fontSize: 30),
@@ -448,6 +448,9 @@ class _GameScreenState extends State<GameScreen> {
                                       }
                                       updateToGameOver();
                                       updateToNewGame();
+
+                                      print(word);
+                                      print(gameTile.correctChar);
                                     });
                                   });
                       }).toList(),
