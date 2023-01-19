@@ -153,9 +153,12 @@ class _GameHomeScreenState extends State<GameHomeScreen> {
                             );
                           });
                     },
-                    child: Image(
-                      image: AssetImage(kLogout),
-                      color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image(
+                        image: AssetImage(kLogout),
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   Padding(
